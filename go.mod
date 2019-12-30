@@ -1,4 +1,4 @@
-module github.com/gsxhnd/g2s
+module github.com/gsxhnd/gecko
 
 go 1.13
 

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/gsxhnd/g2s/cmd"
+import "github.com/gsxhnd/gecko/cmd"
 
 func main() {
 	_ = cmd.Execute()
