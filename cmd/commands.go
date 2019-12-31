@@ -8,10 +8,24 @@ import (
 	"github.com/spf13/viper"
 )
 
+type MysqlDbInfo struct {
+	Host     string `validate:"required"` // Host. 地址
+	Port     int    `validate:"required"` // Port 端口号
+	Username string `validate:"required"` // Username 用户名
+	Password string // Password 密码
+	Database string `validate:"required"` // Database 数据库名
+}
+
 var (
 	// Used for flags.
 	cfgFile     string
 	userLicense string
+	//databaseName string
+	//host string
+	//port int
+	//user,password string
+	//outdir string
+	mysqlInfo MysqlDbInfo
 
 	rootCmd = &cobra.Command{
 		Use:   "gecko",
@@ -27,8 +41,11 @@ var (
 			fmt.Println(cmd)
 			fmt.Println(args)
 			fmt.Println("config: ", viper.GetString("config"))
-			fmt.Println("author: ", viper.GetString("author"))
-			fmt.Println("license: ", viper.GetString("license"))
+			fmt.Println(os.Getenv("TEST_KEO"))
+			fmt.Println(userLicense)
+			viperB, _ := cmd.PersistentFlags().GetBool("viper")
+			fmt.Println("viper: ", viperB)
+			fmt.Println("keo:", viper.GetString("keo"))
 		},
 	}
 )
@@ -45,25 +62,36 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cobra.yaml)")
-	rootCmd.PersistentFlags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")
-	rootCmd.PersistentFlags().StringVarP(&userLicense, "license", "l", "", "name of license for the project")
+	//rootCmd.PersistentFlags().StringP("host", "H", "127.0.0.1", "sql host")
+
+	rootCmd.PersistentFlags().StringVarP(&mysqlInfo.Host, "host", "H", "127.0.0.1", "数据库地址.")
+	err := rootCmd.MarkPersistentFlagRequired("host")
+	if err != nil {
+		fmt.Println("error:")
+		os.Exit(1)
+	}
+	//rootCmd.PersistentFlags().StringVarP(&mysqlInfo.Username, "user", "u", "", "用户名.")
+	//rootCmd.MarkFlagRequired("user")
+	//
+	//rootCmd.PersistentFlags().StringVarP(&mysqlInfo.Password, "password", "p", "", "密码.")
+	//rootCmd.MarkFlagRequired("password")
+	//
+	//rootCmd.PersistentFlags().StringVarP(&mysqlInfo.Database, "database", "d", "", "数据库名")
+	//rootCmd.MarkFlagRequired("database")
+	//
+	//rootCmd.PersistentFlags().StringVarP(&outDir, "outdir", "o", "", "输出目录")
+	//rootCmd.MarkFlagRequired("outdir")
+
+	rootCmd.PersistentFlags().StringVarP(&userLicense, "license", "l", "mit", "name of license for the project")
 	rootCmd.PersistentFlags().Bool("viper", true, "use Viper for configuration")
-	_ = viper.BindPFlag("author", rootCmd.PersistentFlags().Lookup("author"))
+	rootCmd.PersistentFlags().String("keo", "keo", "keo")
 	_ = viper.BindPFlag("useViper", rootCmd.PersistentFlags().Lookup("viper"))
+	_ = viper.BindPFlag("keo", rootCmd.PersistentFlags().Lookup("keo"))
+	_ = viper.BindEnv("keo", "TEST_KEO")
 	viper.SetDefault("author", "NAME HERE <EMAIL ADDRESS>")
-	viper.SetDefault("license", "apache")
 }
 
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-		if err := viper.ReadInConfig(); err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println("Using config file:", viper.ConfigFileUsed())
-		}
-	}
-
+	viper.SetEnvPrefix("test")
 	viper.AutomaticEnv()
 }
