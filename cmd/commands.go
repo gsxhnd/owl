@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -14,23 +14,33 @@ var (
 	userLicense string
 
 	rootCmd = &cobra.Command{
-		Use:   "cobra",
+		Use:   "gecko",
 		Short: "A generator for Cobra based Applications",
 		Long: `Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+		PreRun: func(cmd *cobra.Command, args []string) {
+			fmt.Println("start pre run")
+			fmt.Println(cmd)
+			fmt.Println(args)
+		},
 		Run: func(cmd *cobra.Command, args []string) {
 			// Do Stuff Here
-			fmt.Println(viper.GetString("config"))
-			fmt.Println(viper.GetString("author"))
-			fmt.Println(viper.GetString("license"))
+			fmt.Println(cmd)
+			fmt.Println(args)
+			fmt.Println("config: ", viper.GetString("config"))
+			fmt.Println("author: ", viper.GetString("author"))
+			fmt.Println("license: ", viper.GetString("license"))
 		},
 	}
 )
 
 // Execute executes the root command.
-func Execute() error {
-	return rootCmd.Execute()
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
 
 func init() {
@@ -50,23 +60,12 @@ func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
+		if err := viper.ReadInConfig(); err != nil {
 			fmt.Println(err)
+		} else {
+			fmt.Println("Using config file:", viper.ConfigFileUsed())
 		}
-
-		// Search config in home directory with name ".cobra" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".cobra")
 	}
 
 	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }
