@@ -1,24 +1,28 @@
 SHELL := /bin/bash
 BASEDIR = $(shell pwd)
-APPS = gecko
+APP = gecko
 BuildDIR = build
 
+gitTag = $(shell if [ "`git describe --tags --abbrev=0 2>/dev/null`" != "" ];then git describe --tags --abbrev=0 | sed 's/v//g'; else git log --pretty=format:'%h' -n 1; fi)
+buildDate = $(shell TZ=Asia/Shanghai date +%FT%T%z)
+gitCommit = $(shell git log --pretty=format:'%H' -n 1)
+gitTreeState = $(shell if git status|grep -q 'clean';then echo clean; else echo dirty; fi)
 
+ldflags="-w -X ${versionDir}.gitTag=${gitTag} -X ${versionDir}.buildDate=${buildDate} -X ${versionDir}.gitCommit=${gitCommit} -X ${versionDir}.gitTreeState=${gitTreeState}"
 
-windows:
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o gormt.exe main.go
-mac:
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o gormt main.go
+all: release
+	@ls -al build/
 
-linux:export GOOS=linux
-linux:export GOARCH=amd64
-linux:
-	@go build -v -ldflags ${ldflags}  -o $@ ./apps/$*
+release:
+	# Build for linux
+	go clean
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o ${BuildDIR}/${APP}-${gitTag}-linux64-amd64
+	# Build for win
+	go clean
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -v -o ${BuildDIR}/${APP}-${gitTag}-windows-amd64.exe
+	# Build for mac
+	go clean
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o ${BuildDIR}/${APP}-${gitTag}-darwin-amd64
 
-
-all: $(APPS)
-
-$(APPS): %:$(BuildDIR)/%
-
-$(BuildDIR)/%:
-	@go build -v -o $@ ./apps/$*
+clean:
+	@rm -rvf build/
