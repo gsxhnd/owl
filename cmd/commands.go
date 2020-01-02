@@ -32,9 +32,6 @@ var (
 		Short: "A generator for Cobra based Applications",
 		Long:  `gecko is a CLI  applications.`,
 		PreRun: func(cmd *cobra.Command, args []string) {
-			fmt.Println("start pre run")
-			fmt.Println(cmd)
-			fmt.Println(args)
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			// Do Stuff Here

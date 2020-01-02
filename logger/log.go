@@ -1,93 +1,106 @@
 package logger
 
 import (
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"io"
 	"os"
 	"time"
 )
 
 var logger *zap.Logger
 
-var logLevel = zap.NewAtomicLevel()
-
-func utcTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.UTC().Format("2006-01-02T15:04:05.000000-07:00"))
-}
+//var logLevel = zap.NewAtomicLevel()
 
 func init() {
-	//filePath := getFilePath()
+	proEncoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
+		MessageKey:  "msg",
+		LevelKey:    "level",
+		TimeKey:     "ts",
+		CallerKey:   "caller",
+		EncodeLevel: zapcore.CapitalLevelEncoder,
+		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+			enc.AppendString(t.UTC().Format("2006-01-02T15:04:05.000000-07:00"))
+		},
+		EncodeCaller: zapcore.ShortCallerEncoder,
+		EncodeDuration: func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
+			enc.AppendInt64(int64(d) / 1000000)
+		},
+	})
 
-	//w := zapcore.AddSync(&lumberjack.Logger{
-	//	Filename:  filePath,
-	//	MaxSize:   1024, //MB
-	//	LocalTime: true,
-	//	Compress:  true,
-	//})
+	debugEncoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
+		MessageKey:  "msg",
+		LevelKey:    "level",
+		TimeKey:     "ts",
+		CallerKey:   "caller",
+		EncodeLevel: zapcore.CapitalColorLevelEncoder,
+		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+			enc.AppendString(t.UTC().Format("2006-01-02T15:04:05.000000-07:00"))
+		},
+		EncodeCaller: zapcore.ShortCallerEncoder,
+		EncodeDuration: func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
+			enc.AppendInt64(int64(d) / 1000000)
+		},
+	})
 
-	//config := zap.NewProductionEncoderConfig()
-	config := zap.NewDevelopmentEncoderConfig()
-	//config.EncodeTime = zapcore.RFC3339NanoTimeEncoder
-	config.EncodeTime = utcTimeEncoder
-	config.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl < zapcore.WarnLevel
+	})
 
-	core := zapcore.NewCore(
-		//zapcore.NewJSONEncoder(config),
-		zapcore.NewConsoleEncoder(config),
-		os.Stdout,
-		logLevel,
+	warnLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl >= zapcore.WarnLevel
+	})
+
+	infoHook := getWriter("./log/demo")
+	warnHook := getWriter("./log/demo_error")
+
+	core := zapcore.NewTee(
+		zapcore.NewCore(proEncoder, zapcore.AddSync(infoHook), infoLevel),
+		zapcore.NewCore(proEncoder, zapcore.AddSync(warnHook), warnLevel),
+		zapcore.NewCore(debugEncoder, os.Stdout, zap.DebugLevel),
 	)
-
 	logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 }
 
 type Level int8
 
-const (
-	DebugLevel Level = iota - 1
+//const (
+//	DebugLevel Level = iota - 1
+//
+//	InfoLevel
+//
+//	WarnLevel
+//
+//	ErrorLevel
+//
+//	DPanicLevel
+//
+//	PanicLevel
+//
+//	FatalLevel
+//)
+//
+//func SetLevel(level Level) {
+//	logLevel.SetLevel(zapcore.Level(level))
+//}
 
-	InfoLevel
+func getWriter(filename string) io.Writer {
+	// 生成rotatelogs的Logger 实际生成的文件名 demo.log.YYmmddHH
+	// demo.log是指向最新日志的链接
+	// 保存7天内的日志，每1小时(整点)分割一次日志
+	hook, err := rotatelogs.New(
+		filename+".%Y%m%d.log", // 没有使用go风格反人类的format格式
+		//rotatelogs.WithLinkName(filename),
+		rotatelogs.WithMaxAge(time.Hour*24),
+		rotatelogs.WithRotationTime(time.Hour*24),
+	)
 
-	WarnLevel
-
-	ErrorLevel
-
-	DPanicLevel
-
-	PanicLevel
-
-	FatalLevel
-)
-
-func SetLevel(level Level) {
-	logLevel.SetLevel(zapcore.Level(level))
+	if err != nil {
+		panic(err)
+	}
+	return hook
 }
-
-//func getCurrentDirectory() string {
-//	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-//	if err != nil {
-//		log.Info(err)
-//	}
-//	return strings.Replace(dir, "\\", "/", -1)
-//}
-//
-//func getFilePath() string {
-//	logfile := getCurrentDirectory() + "/" + getAppname() + ".log"
-//	return logfile
-//}
-
-//func getAppname() string {
-//	full := os.Args[0]
-//	full = strings.Replace(full, "\\", "/", -1)
-//	splits := strings.Split(full, "/")
-//	if len(splits) >= 1 {
-//		name := splits[len(splits)-1]
-//		name = strings.TrimSuffix(name, ".exe")
-//		return name
-//	}
-//
-//	return ""
-//}
 
 func Debug(msg string, fields ...zap.Field) {
 	logger.Debug(msg, fields...)

@@ -3,7 +3,10 @@ module github.com/gsxhnd/gecko
 go 1.13
 
 require (
+	github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible
+	github.com/lestrrat-go/strftime v1.0.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	go.uber.org/atomic v1.5.1 // indirect
