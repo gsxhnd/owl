@@ -57,11 +57,11 @@ func init() {
 	//rootCmd.PersistentFlags().StringP("host", "H", "127.0.0.1", "sql host")
 
 	rootCmd.PersistentFlags().StringVarP(&mysqlInfo.Host, "host", "H", "127.0.0.1", "数据库地址.")
-	err := rootCmd.MarkPersistentFlagRequired("host")
-	if err != nil {
-		fmt.Println("error:")
-		os.Exit(1)
-	}
+	//err := rootCmd.MarkPersistentFlagRequired("host")
+	//if err != nil {
+	//	fmt.Println("error:")
+	//	os.Exit(1)
+	//}
 	//rootCmd.PersistentFlags().StringVarP(&mysqlInfo.Username, "user", "u", "", "用户名.")
 	//rootCmd.MarkFlagRequired("user")
 	//
