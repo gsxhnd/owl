@@ -9,9 +9,12 @@ import (
 func main() {
 	cmd.Execute()
 	logger.SetLevel(logger.DebugLevel)
-	logger.Debug("Debug")
-	//logger.Info("Info")
-	//logger.Warn("warn")
-	//logger.Error("Error")
-	logger.Debug("123", zap.String("123", "123"), zap.String("123", "123"))
+	logger.Debug("Debug", zap.String("123", "123"), zap.String("123", "123"))
+	logger.Info("Info")
+	logger.Warn("warn")
+	logger.Error("Error")
+	logger.DPanic("Panic")
+	logger.Panic("Panic")
+	logger.Fatal("Fatal")
+	logger.Info("Info")
 }

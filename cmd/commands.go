@@ -38,14 +38,6 @@ var (
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			// Do Stuff Here
-			fmt.Println(cmd)
-			fmt.Println(args)
-			fmt.Println("config: ", viper.GetString("config"))
-			fmt.Println(os.Getenv("TEST_KEO"))
-			fmt.Println(userLicense)
-			viperB, _ := cmd.PersistentFlags().GetBool("viper")
-			fmt.Println("viper: ", viperB)
-			fmt.Println("keo:", viper.GetString("keo"))
 		},
 	}
 )

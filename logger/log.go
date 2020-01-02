@@ -1,15 +1,19 @@
 package logger
 
 import (
-	"os"
-
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"os"
+	"time"
 )
 
 var logger *zap.Logger
 
 var logLevel = zap.NewAtomicLevel()
+
+func utcTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString(t.UTC().Format("2006-01-02T15:04:05.000000-07:00"))
+}
 
 func init() {
 	//filePath := getFilePath()
@@ -23,7 +27,8 @@ func init() {
 
 	//config := zap.NewProductionEncoderConfig()
 	config := zap.NewDevelopmentEncoderConfig()
-	config.EncodeTime = zapcore.ISO8601TimeEncoder
+	//config.EncodeTime = zapcore.RFC3339NanoTimeEncoder
+	config.EncodeTime = utcTimeEncoder
 	config.EncodeLevel = zapcore.CapitalColorLevelEncoder
 
 	core := zapcore.NewCore(
@@ -34,7 +39,6 @@ func init() {
 	)
 
 	logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
-	//log = logger.Sugar()
 }
 
 type Level int8
@@ -93,31 +97,20 @@ func Info(msg string, fields ...zap.Field) {
 	logger.Info(msg, fields...)
 }
 
-//
-//func Infof(template string, args ...interface{}) {
-//	log.Infof(template, args...)
-//}
-//
-//func Warn(args ...interface{}) {
-//	log.Warn(args...)
-//}
-//
-//func Warnf(template string, args ...interface{}) {
-//	log.Warnf(template, args...)
-//}
-//
-//func Error(args ... interface{}) {
-//	log.Error(args...)
-//}
-//
-//func Errorf(template string, args ...interface{}) {
-//	log.Errorf(template, args...)
-//}
-//
-//func Panic(args ...interface{}) {
-//	log.Panic(args...)
-//}
-//
-//func Panicf(template string, args ...interface{}) {
-//	log.Panicf(template, args...)
-//}
+func Warn(msg string, fields ...zap.Field) {
+	logger.Warn(msg, fields...)
+}
+func Error(msg string, fields ...zap.Field) {
+	logger.Error(msg, fields...)
+}
+
+func Panic(msg string, fields ...zap.Field) {
+	logger.Panic(msg, fields...)
+}
+func DPanic(msg string, fields ...zap.Field) {
+	logger.DPanic(msg, fields...)
+}
+
+func Fatal(msg string, fields ...zap.Field) {
+	logger.Fatal(msg, fields...)
+}
