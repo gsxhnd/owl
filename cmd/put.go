@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"errors"
-	"github.com/gsxhnd/gecko/backend"
-	"github.com/gsxhnd/gecko/logger"
+	"github.com/gsxhnd/owl/backend"
+	"github.com/gsxhnd/owl/logger"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"io/ioutil"

@@ -1,4 +1,4 @@
-module github.com/gsxhnd/gecko
+module github.com/gsxhnd/owl
 
 go 1.13
 
