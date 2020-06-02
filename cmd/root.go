@@ -8,9 +8,9 @@ import (
 var (
 	endPoint string
 	rootCmd  = &cobra.Command{
-		Use:   "gecko",
+		Use:   "owl",
 		Short: "A generator for Cobra based Applications",
-		Long:  `gecko is a CLI  applications.`,
+		Long:  `owl is a CLI  applications.`,
 	}
 )
 

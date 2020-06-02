@@ -20,12 +20,12 @@ var (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: `Show version`,
-	Long:  `Show version of gecko`,
+	Long:  `Show version of owl`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("gecko version: ", gitTag)
-		fmt.Println("gecko commit: ", gitCommit)
-		fmt.Println("gecko build date: ", gitTreeState)
-		fmt.Println("gecko build date: ", buildDate)
+		fmt.Println("owl version: ", gitTag)
+		fmt.Println("owl commit: ", gitCommit)
+		fmt.Println("owl build date: ", gitTreeState)
+		fmt.Println("owl build date: ", buildDate)
 		fmt.Println("go version: ", goVersion)
 		fmt.Println("go compiler: ", compiler)
 		fmt.Println("platform: ", platform)

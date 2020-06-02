@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gsxhnd/gecko/cmd"
+	"github.com/gsxhnd/owl/cmd"
 )
 
 func main() {
