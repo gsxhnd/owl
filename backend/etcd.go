@@ -40,3 +40,14 @@ func (e *EtcdConn) Put() error {
 	fmt.Println(resp)
 	return nil
 }
+
+func (e *EtcdConn) Get() (string, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	resp, err := e.client.Get(ctx, e.Key)
+	if err != nil {
+		return "", err
+	}
+	for _, v := range resp.Kvs {
+		return string(v.Value), nil
+	}
+}
