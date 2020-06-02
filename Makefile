@@ -26,6 +26,6 @@ release:
 
 clean:
 	@go clean --cache
-	@rm -rvf build/
+	@rm -rvf build/*
 
 .PHONY: release clean

@@ -1,19 +1,16 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
 var (
-	rootCmd = &cobra.Command{
+	endPoint string
+	rootCmd  = &cobra.Command{
 		Use:   "gecko",
 		Short: "A generator for Cobra based Applications",
 		Long:  `gecko is a CLI  applications.`,
-		PreRun: func(cmd *cobra.Command, args []string) {
-		},
-		Run: func(cmd *cobra.Command, args []string) {
-			// Do Stuff Here
-		},
 	}
 )
 
@@ -21,11 +18,11 @@ var (
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		panic(err)
+	} else {
+		fmt.Println("end")
 	}
 }
 
 func init() {
-}
-
-func initConfig() {
+	rootCmd.AddCommand(versionCmd, putComd)
 }
