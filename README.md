@@ -1,5 +1,5 @@
-[![](https://api.travis-ci.com/gsxhnd/gecko.svg?branch=master)](https://travis-ci.com/gsxhnd/gecko)
-[![](https://img.shields.io/github/license/gsxhnd/gecko)](https://opensource.org/licenses/MIT)
+[![](https://api.travis-ci.com/gsxhnd/owl.svg?branch=master)](https://travis-ci.com/gsxhnd/owl)
+[![](https://img.shields.io/github/license/gsxhnd/owl)](https://opensource.org/licenses/MIT)
 
-# Gecko
-put configure file put to etcd
+# owl
+Read and Put conf to etcd
