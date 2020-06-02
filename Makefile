@@ -14,9 +14,6 @@ ldflags= "-X ${versionDir}.gitTag=${gitTag} \
 -X ${versionDir}.gitCommit=${gitCommit} \
 -X ${versionDir}.gitTreeState=${gitTreeState}"
 
-all: release
-	@ls -al build/
-
 release:
 	# Build for linux
 	go clean
@@ -29,4 +26,7 @@ release:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -v -ldflags ${ldflags} -o ${BuildDIR}/${APP}-${gitTag}-darwin-amd64
 
 clean:
+	@go clean --cache
 	@rm -rvf build/
+
+.PHONY: release clean

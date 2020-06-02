@@ -2,4 +2,4 @@
 [![](https://img.shields.io/github/license/gsxhnd/gecko)](https://opensource.org/licenses/MIT)
 
 # Gecko
-gorm to struct
+put configure file put to etcd
