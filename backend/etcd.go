@@ -68,20 +68,27 @@ func (e *EtcdConn) Get() (string, error) {
 	return e.Value, nil
 }
 
-func (e *EtcdConn) Update(v string) {
+func (e *EtcdConn) update(v string) {
 	e.lock.Lock()
 	defer e.lock.Unlock()
 	e.Value = v
 }
 
-func (e *EtcdConn) Watcher() {
+func (e *EtcdConn) Watcher() string {
 	rch := e.client.Watch(context.Background(), e.Key)
 	for wresp := range rch {
 		for _, ev := range wresp.Events {
 			switch ev.Type {
 			case mvccpb.PUT:
-				e.Update(string(ev.Kv.Value))
+				e.update(string(ev.Kv.Value))
+				return e.Value
+			case mvccpb.DELETE:
+				e.update("")
+				return ""
+			default:
+				return e.Value
 			}
 		}
 	}
+	return ""
 }
