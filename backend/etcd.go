@@ -2,8 +2,9 @@ package backend
 
 import (
 	"context"
-	"fmt"
 	"github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/mvcc/mvccpb"
+	"sync"
 	"time"
 )
 
@@ -12,6 +13,7 @@ type EtcdConn struct {
 	Key       string
 	Value     string
 	client    *clientv3.Client
+	lock      sync.RWMutex
 }
 
 func NewEtcdClient(addr []string) (*EtcdConn, error) {
@@ -31,23 +33,55 @@ func NewEtcdClient(addr []string) (*EtcdConn, error) {
 	}, nil
 }
 
+func NewEtcdConn(conf clientv3.Config) (*EtcdConn, error) {
+	client, err := clientv3.New(conf)
+	if err != nil {
+		client = nil
+		return nil, err
+	}
+	return &EtcdConn{
+		EndPoints: conf.Endpoints,
+		client:    client,
+	}, nil
+}
+
 func (e *EtcdConn) Put() error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	resp, err := e.client.Put(ctx, e.Key, e.Value)
+	_, err := e.client.Put(ctx, e.Key, e.Value)
 	if err != nil {
 		return err
 	}
-	fmt.Println(resp)
 	return nil
 }
 
 func (e *EtcdConn) Get() (string, error) {
+	defer e.lock.Unlock()
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	resp, err := e.client.Get(ctx, e.Key)
 	if err != nil {
 		return "", err
 	}
 	for _, v := range resp.Kvs {
-		return string(v.Value), nil
+		e.lock.Lock()
+		e.Value = string(v.Value)
+	}
+	return e.Value, nil
+}
+
+func (e *EtcdConn) Update(v string) {
+	e.lock.Lock()
+	defer e.lock.Unlock()
+	e.Value = v
+}
+
+func (e *EtcdConn) Watcher() {
+	rch := e.client.Watch(context.Background(), e.Key)
+	for wresp := range rch {
+		for _, ev := range wresp.Events {
+			switch ev.Type {
+			case mvccpb.PUT:
+				e.Update(string(ev.Kv.Value))
+			}
+		}
 	}
 }

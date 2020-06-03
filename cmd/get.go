@@ -7,10 +7,9 @@ import (
 	"github.com/gsxhnd/owl/logger"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"io/ioutil"
 )
 
-var getComd = &cobra.Command{
+var getCmd = &cobra.Command{
 	Use:     "get",
 	Short:   "get",
 	Long:    "get",
@@ -39,5 +38,5 @@ var getComd = &cobra.Command{
 }
 
 func init() {
-	putComd.PersistentFlags().StringVarP(&endPoint, "endpoint", "e", "http://127.0.0.1", "etcd endpoint")
+	getCmd.PersistentFlags().StringVarP(&endPoint, "endpoint", "e", "http://127.0.0.1", "etcd endpoint")
 }

@@ -1,1 +1,5 @@
 name: test
+addr: :8080
+test:
+  - test01: test01
+  - test02: test02
