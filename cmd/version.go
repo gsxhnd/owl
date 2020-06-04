@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	version      = "0.2.0"
 	gitTag       string
 	gitCommit    string
 	gitTreeState string
@@ -22,7 +23,11 @@ var versionCmd = &cobra.Command{
 	Short: `Show version`,
 	Long:  `Show version of owl`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("owl version: ", gitTag)
+		if gitTag == "" {
+			fmt.Println("owl version: ", version)
+		} else {
+			fmt.Println("owl version: ", gitTag)
+		}
 		fmt.Println("owl commit: ", gitCommit)
 		fmt.Println("owl build date: ", gitTreeState)
 		fmt.Println("owl build date: ", buildDate)

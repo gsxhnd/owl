@@ -3,3 +3,7 @@
 
 # owl
 Read and Put conf to etcd
+
+You can use owl as a command line tool or as a  library
+
+* [owl cli](bin)

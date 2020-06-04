@@ -1,6 +1,6 @@
 module github.com/gsxhnd/owl
 
-go 1.13
+go 1.14
 
 require (
 	github.com/coreos/etcd v3.3.22+incompatible
