@@ -26,8 +26,7 @@ func TestEtcdConn_Get(t *testing.T) {
 				DialTimeout:      5 * time.Second,
 			}
 			e, _ := NewEtcdConn(conf)
-			e.Key = "/conf/test.yaml"
-			got, err := e.Get()
+			got, err := e.Get("/conf/test.yaml")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
