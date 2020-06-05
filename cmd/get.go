@@ -27,8 +27,7 @@ var getCmd = &cobra.Command{
 		if err != nil {
 			logger.Panic("", zap.Error(err))
 		}
-		conn.Key = key
-		v, err := conn.Get()
+		v, err := conn.Get(key)
 		if err != nil {
 			logger.Panic("", zap.Error(err))
 		}

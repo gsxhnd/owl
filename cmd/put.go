@@ -30,9 +30,7 @@ var putComd = &cobra.Command{
 		}
 		yamlFile, err := ioutil.ReadFile(filePath)
 
-		conn.Key = key
-		conn.Value = string(yamlFile)
-		err = conn.Put()
+		err = conn.Put(key, string(yamlFile))
 		if err != nil {
 			logger.Panic("", zap.Error(err))
 		}
