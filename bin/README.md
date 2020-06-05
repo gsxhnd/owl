@@ -39,3 +39,13 @@ flags:
 arg:
     the key what you want value at the etcd
 ```
+
+## Example
+### get
+```bash
+owl get -e 127.0.0.1:2379 /conf/test.yaml
+```
+### put
+```bash
+owl put -e local_dev:2379 /conf/test.yaml ./mock/test.yaml
+```
