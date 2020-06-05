@@ -8,15 +8,14 @@ import (
 	"time"
 )
 
-type EtcdConn struct {
-	EndPoints []string
-	Key       string
-	Value     string
-	client    *clientv3.Client
-	lock      sync.RWMutex
+type etcdConn struct {
+	Key    string
+	Value  string
+	client *clientv3.Client
+	lock   sync.RWMutex
 }
 
-func NewEtcdClient(addr []string) (*EtcdConn, error) {
+func NewEtcdClient(addr []string) (*etcdConn, error) {
 	conf := clientv3.Config{
 		Endpoints:        addr,
 		AutoSyncInterval: 0,
@@ -27,54 +26,66 @@ func NewEtcdClient(addr []string) (*EtcdConn, error) {
 		client = nil
 		return nil, err
 	}
-	return &EtcdConn{
-		EndPoints: addr,
-		client:    client,
+	return &etcdConn{
+		client: client,
 	}, nil
 }
 
-func NewEtcdConn(conf clientv3.Config) (*EtcdConn, error) {
+func NewEtcdConn(conf clientv3.Config) (*etcdConn, error) {
 	client, err := clientv3.New(conf)
 	if err != nil {
 		client = nil
 		return nil, err
 	}
-	return &EtcdConn{
-		EndPoints: conf.Endpoints,
-		client:    client,
+	return &etcdConn{
+		client: client,
 	}, nil
 }
 
-func (e *EtcdConn) Put() error {
+func (e *etcdConn) Put(key, value string) error {
+	defer e.lock.Unlock()
+	e.lock.Lock()
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	_, err := e.client.Put(ctx, e.Key, e.Value)
+	if key == "" {
+		key = e.Key
+	}
+	if value == "" {
+		value = e.Value
+	} else {
+		e.Value = value
+	}
+	_, err := e.client.Put(ctx, key, value)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EtcdConn) Get() (string, error) {
+func (e *etcdConn) Get(key string) (string, error) {
 	defer e.lock.Unlock()
+	e.lock.Lock()
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	resp, err := e.client.Get(ctx, e.Key)
+	if key == "" {
+		key = e.Key
+	}
+	resp, err := e.client.Get(ctx, key)
 	if err != nil {
 		return "", err
 	}
+
 	for _, v := range resp.Kvs {
-		e.lock.Lock()
 		e.Value = string(v.Value)
 	}
 	return e.Value, nil
 }
 
-func (e *EtcdConn) update(v string) {
+func (e *etcdConn) update(v string) {
 	e.lock.Lock()
 	defer e.lock.Unlock()
 	e.Value = v
 }
 
-func (e *EtcdConn) Watcher() string {
+func (e *etcdConn) Watcher() string {
 	rch := e.client.Watch(context.Background(), e.Key)
 	for wresp := range rch {
 		for _, ev := range wresp.Events {
