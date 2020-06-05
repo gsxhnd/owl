@@ -3,10 +3,9 @@ package cmd
 import (
 	"errors"
 	"github.com/gsxhnd/owl/backend"
-	"github.com/gsxhnd/owl/logger"
 	"github.com/spf13/cobra"
-	"go.uber.org/zap"
 	"io/ioutil"
+	"log"
 )
 
 var putComd = &cobra.Command{
@@ -26,13 +25,13 @@ var putComd = &cobra.Command{
 		var filePath = args[1]
 		conn, err := backend.NewEtcdClient([]string{endPoint})
 		if err != nil {
-			logger.Panic("", zap.Error(err))
+			log.Panic(err)
 		}
 		yamlFile, err := ioutil.ReadFile(filePath)
 
 		err = conn.Put(key, string(yamlFile))
 		if err != nil {
-			logger.Panic("", zap.Error(err))
+			log.Panic(err)
 		}
 		return nil
 	},

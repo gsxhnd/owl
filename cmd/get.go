@@ -4,9 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gsxhnd/owl/backend"
-	"github.com/gsxhnd/owl/logger"
 	"github.com/spf13/cobra"
-	"go.uber.org/zap"
+	"log"
 )
 
 var getCmd = &cobra.Command{
@@ -25,11 +24,11 @@ var getCmd = &cobra.Command{
 		var key = args[0]
 		conn, err := backend.NewEtcdClient([]string{endPoint})
 		if err != nil {
-			logger.Panic("", zap.Error(err))
+			log.Panic(err)
 		}
 		v, err := conn.Get(key)
 		if err != nil {
-			logger.Panic("", zap.Error(err))
+			log.Panic(err)
 		}
 		fmt.Println("value: ", v)
 		return nil
