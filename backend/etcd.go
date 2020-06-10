@@ -2,6 +2,7 @@ package backend
 
 import (
 	"context"
+	"fmt"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	"sync"
@@ -85,21 +86,23 @@ func (e *etcdConn) update(v string) {
 	e.Value = v
 }
 
-func (e *etcdConn) Watcher() string {
-	rch := e.client.Watch(context.Background(), e.Key)
+func (e *etcdConn) Watcher(key string, c chan string) {
+	fmt.Println("start watch:", key)
+	if key == "" {
+		key = e.Key
+	}
+	rch := e.client.Watch(context.Background(), key)
 	for wresp := range rch {
 		for _, ev := range wresp.Events {
 			switch ev.Type {
 			case mvccpb.PUT:
 				e.update(string(ev.Kv.Value))
-				return e.Value
+				c <- e.Value
 			case mvccpb.DELETE:
 				e.update("")
-				return ""
+				c <- ""
 			default:
-				return e.Value
 			}
 		}
 	}
-	return ""
 }
