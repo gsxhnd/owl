@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"errors"
-	"github.com/gsxhnd/owl/backend"
+	"github.com/gsxhnd/owl"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"log"
@@ -23,13 +23,10 @@ var putComd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var key = args[0]
 		var filePath = args[1]
-		conn, err := backend.NewEtcdClient([]string{endPoint})
-		if err != nil {
-			log.Panic(err)
-		}
+		owl.SetAddr([]string{endPoint})
 		yamlFile, err := ioutil.ReadFile(filePath)
 
-		err = conn.Put(key, string(yamlFile))
+		err = owl.Put(key, string(yamlFile))
 		if err != nil {
 			log.Panic(err)
 		}

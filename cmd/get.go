@@ -3,7 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/gsxhnd/owl/backend"
+	"github.com/gsxhnd/owl"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -22,11 +22,10 @@ var getCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var key = args[0]
-		conn, err := backend.NewEtcdClient([]string{endPoint})
-		if err != nil {
-			log.Panic(err)
-		}
-		v, err := conn.Get(key)
+		owl.SetAddr([]string{endPoint})
+		owl.SetKey(key)
+
+		v, err := owl.Get()
 		if err != nil {
 			log.Panic(err)
 		}

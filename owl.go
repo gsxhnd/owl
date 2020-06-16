@@ -2,9 +2,10 @@ package owl
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
+	"log"
 	"sync"
 	"time"
 )
@@ -15,53 +16,42 @@ func init() {
 	owl = new(Owl)
 }
 
+// Owl is a lib for get configure value from etcd.
 type Owl struct {
 	key    string
 	value  string
 	config clientv3.Config
 	client *clientv3.Client
 	lock   sync.RWMutex
-	vc     *chan string
 }
 
+// New returns an initialized Owl instance.
 func New(key string, conf clientv3.Config) *Owl {
 	client, err := clientv3.New(conf)
 	if err != nil {
 		client = nil
 		return nil
 	}
-	c := make(chan string)
 	return &Owl{
 		key:    key,
 		client: client,
-		vc:     &c,
 	}
 }
 
-func Default(addr []string) *Owl {
-	conf := clientv3.Config{
-		Endpoints:        addr,
-		AutoSyncInterval: 0,
-		DialTimeout:      5 * time.Second,
-	}
-	client, err := clientv3.New(conf)
-	if err != nil {
-		client = nil
-	}
-	return &Owl{
-		client: client,
-	}
-
-}
-
-func SetConfig(config clientv3.Config) {
+// SetConfigName sets configure for the etcd. The
+// client include etcd url
+func SetConfig(config clientv3.Config) { owl.SetConfig(config) }
+func (o *Owl) SetConfig(config clientv3.Config) {
 	client, err := clientv3.New(config)
 	if err != nil {
 		client = nil
 	}
-	owl.client = client
+	o.client = client
 }
-func SetAddr(addr []string) {
+
+// SetAddr sets addrs for the etcd use default etcd client config.
+func SetAddr(addr []string) { owl.SetAddr(addr) }
+func (o *Owl) SetAddr(addr []string) {
 	conf := clientv3.Config{
 		Endpoints:        addr,
 		AutoSyncInterval: 0,
@@ -71,8 +61,10 @@ func SetAddr(addr []string) {
 	if err != nil {
 		client = nil
 	}
-	owl.client = client
+	o.client = client
 }
+
+// SetKey set config key name in etcd.
 func SetKey(key string) { owl.SetKey(key) }
 func (o *Owl) SetKey(key string) {
 	defer o.lock.Unlock()
@@ -80,14 +72,16 @@ func (o *Owl) SetKey(key string) {
 	o.key = key
 }
 
-func Get(key string) (string, error)          { return owl.get(key) }
-func (o *Owl) Get(key string) (string, error) { return o.get(key) }
-func (o *Owl) get(key string) (string, error) {
+// Get get config content from etcd. The config's key was
+// stored by SetKey.
+func Get() (string, error) { return owl.Get() }
+func (o *Owl) Get() (string, error) {
 	defer o.lock.Unlock()
 	o.lock.Lock()
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	key := o.key
 	if key == "" {
-		key = o.key
+		return "", errors.New("")
 	}
 	resp, err := o.client.Get(ctx, key)
 	if err != nil {
@@ -119,11 +113,26 @@ func (o *Owl) Put(key, value string) error {
 	}
 	return nil
 }
-func (o *Owl) GetValue() string {
-	return o.value
-}
-func (o *Owl) GetKey() string {
-	return o.key
+
+// GetByKey get config content from etcd by you defined @key,then
+// key and value what in etcd will be stored in owl struct.
+func GetByKey(key string) (string, error) { return owl.GetByKey(key) }
+func (o *Owl) GetByKey(key string) (string, error) {
+	defer o.lock.Unlock()
+	o.lock.Lock()
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	if key == "" {
+		key = o.key
+	}
+	resp, err := o.client.Get(ctx, key)
+	if err != nil {
+		return "", err
+	}
+
+	for _, v := range resp.Kvs {
+		o.value = string(v.Value)
+	}
+	return o.value, nil
 }
 
 func (o *Owl) update(v string) {
@@ -131,8 +140,11 @@ func (o *Owl) update(v string) {
 	defer o.lock.Unlock()
 	o.value = v
 }
+
+// Watch watch key's value in etcd
+func Watcher(key string, c chan string) { owl.Watcher(key, c) }
 func (o *Owl) Watcher(key string, c chan string) {
-	fmt.Println("start watch:", key)
+	log.Println("start watch: ", key)
 	if key == "" {
 		key = o.key
 	}
