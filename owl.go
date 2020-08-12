@@ -49,7 +49,7 @@ func (o *Owl) SetConfig(config clientv3.Config) {
 	o.client = client
 }
 
-// SetAddr sets addrs for the etcd use default etcd client config.
+// SetAddr sets address for the etcd use default etcd client config.
 func SetAddr(addr []string) { owl.SetAddr(addr) }
 func (o *Owl) SetAddr(addr []string) {
 	conf := clientv3.Config{
@@ -149,8 +149,8 @@ func (o *Owl) Watcher(key string, c chan string) {
 		key = o.key
 	}
 	rch := o.client.Watch(context.Background(), key)
-	for wresp := range rch {
-		for _, ev := range wresp.Events {
+	for resp := range rch {
+		for _, ev := range resp.Events {
 			switch ev.Type {
 			case mvccpb.PUT:
 				o.update(string(ev.Kv.Value))
