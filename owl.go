@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
-	"log"
 	"sync"
 	"time"
 )
@@ -20,7 +19,6 @@ func init() {
 type Owl struct {
 	key    string
 	value  string
-	config clientv3.Config
 	client *clientv3.Client
 	lock   sync.RWMutex
 }
@@ -70,19 +68,25 @@ func (o *Owl) SetKey(key string) {
 	defer o.lock.Unlock()
 	o.lock.Lock()
 	o.key = key
+	o.value = ""
 }
 
-// Get get config content from etcd. The config's key was
+// Get get value from etcd. The config's key was
 // stored by SetKey.
 func Get() (string, error) { return owl.Get() }
 func (o *Owl) Get() (string, error) {
 	defer o.lock.Unlock()
 	o.lock.Lock()
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+
 	key := o.key
 	if key == "" {
 		return "", errors.New("")
 	}
+	if o.value != "" {
+		return o.value, nil
+	}
+
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	resp, err := o.client.Get(ctx, key)
 	if err != nil {
 		return "", err
@@ -94,19 +98,10 @@ func (o *Owl) Get() (string, error) {
 	return o.value, nil
 }
 
+// Put value into etcd.
 func Put(key, value string) error { return owl.Put(key, value) }
 func (o *Owl) Put(key, value string) error {
-	defer o.lock.Unlock()
-	o.lock.Lock()
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	if key == "" {
-		key = o.key
-	}
-	if value == "" {
-		value = o.value
-	} else {
-		o.value = value
-	}
 	_, err := o.client.Put(ctx, key, value)
 	if err != nil {
 		return err
@@ -114,49 +109,33 @@ func (o *Owl) Put(key, value string) error {
 	return nil
 }
 
-// GetByKey get config content from etcd by you defined @key,then
-// key and value what in etcd will be stored in owl struct.
+// GetByKey get config content from etcd by key
 func GetByKey(key string) (string, error) { return owl.GetByKey(key) }
 func (o *Owl) GetByKey(key string) (string, error) {
-	defer o.lock.Unlock()
-	o.lock.Lock()
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	if key == "" {
-		key = o.key
-	}
 	resp, err := o.client.Get(ctx, key)
 	if err != nil {
 		return "", err
 	}
+	var value string
 
 	for _, v := range resp.Kvs {
-		o.value = string(v.Value)
+		value = string(v.Value)
 	}
-	return o.value, nil
-}
 
-func (o *Owl) update(v string) {
-	o.lock.Lock()
-	defer o.lock.Unlock()
-	o.value = v
+	return value, nil
 }
 
 // Watch watch key's value in etcd
 func Watcher(key string, c chan string) { owl.Watcher(key, c) }
 func (o *Owl) Watcher(key string, c chan string) {
-	log.Println("start watch: ", key)
-	if key == "" {
-		key = o.key
-	}
 	rch := o.client.Watch(context.Background(), key)
 	for resp := range rch {
 		for _, ev := range resp.Events {
 			switch ev.Type {
 			case mvccpb.PUT:
-				o.update(string(ev.Kv.Value))
 				c <- o.value
 			case mvccpb.DELETE:
-				o.update("")
 				c <- ""
 			default:
 			}
