@@ -24,16 +24,15 @@ type Owl struct {
 }
 
 // New returns an initialized Owl instance.
-func New(key string, conf clientv3.Config) *Owl {
+func New(conf clientv3.Config) (*Owl, error) {
 	client, err := clientv3.New(conf)
 	if err != nil {
 		client = nil
-		return nil
+		return nil, err
 	}
 	return &Owl{
-		key:    key,
 		client: client,
-	}
+	}, nil
 }
 
 // SetConfigName sets configure for the etcd. The
@@ -126,6 +125,23 @@ func (o *Owl) GetByKey(key string) (string, error) {
 	return value, nil
 }
 
+func GetKeys(prefix string) ([]string, error) { return owl.GetKeys(prefix) }
+func (o *Owl) GetKeys(prefix string) ([]string, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	resp, err := o.client.Get(ctx, prefix, clientv3.WithPrefix())
+	if err != nil {
+		return nil, err
+	}
+	if resp == nil {
+		return nil, nil
+	}
+	var keys []string
+	for _, v := range resp.Kvs {
+		keys = append(keys, string(v.Key))
+	}
+	return keys, nil
+}
+
 // Watch watch key's value in etcd
 func Watcher(key string, c chan string) { owl.Watcher(key, c) }
 func (o *Owl) Watcher(key string, c chan string) {
@@ -134,7 +150,7 @@ func (o *Owl) Watcher(key string, c chan string) {
 		for _, ev := range resp.Events {
 			switch ev.Type {
 			case mvccpb.PUT:
-				c <- o.value
+				c <- string(ev.Kv.Value)
 			case mvccpb.DELETE:
 				c <- ""
 			default:
