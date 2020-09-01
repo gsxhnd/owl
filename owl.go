@@ -17,10 +17,12 @@ func init() {
 
 // Owl is a lib for get configure value from etcd.
 type Owl struct {
-	key    string
-	value  string
-	client *clientv3.Client
-	lock   sync.RWMutex
+	key      string
+	value    string
+	filename string
+	filepath []string
+	client   *clientv3.Client
+	lock     sync.RWMutex
 }
 
 // New returns an initialized Owl instance.
@@ -60,6 +62,15 @@ func (o *Owl) SetAddr(addr []string) {
 	}
 	o.client = client
 }
+
+func SetConfName(name string)          {}
+func (o *Owl) SetConfName(name string) {}
+
+func AddConfPath(path string)          {}
+func (o *Owl) AddConfPath(path string) {}
+
+func ReadConf()          {}
+func (o *Owl) ReadConf() {}
 
 // SetKey set config key name in etcd.
 func SetKey(key string) { owl.SetKey(key) }
@@ -158,3 +169,28 @@ func (o *Owl) Watcher(key string, c chan string) {
 		}
 	}
 }
+
+func GetString(key string) string                              { return owl.GetString(key) }
+func (o *Owl) GetString(key string) string                     { return "" }
+func GetStringMap(key string) map[string]interface{}           { return nil }
+func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
+func GetStringMapString(key string) map[string]string          { return nil }
+func (o *Owl) GetStringMapString(key string) map[string]string { return nil }
+func GetStringSlice(key string) []string                       { return nil }
+func (o *Owl) GetStringSlice(key string) []string              { return nil }
+func GetInt(key string) int                                    { return 0 }
+func (o *Owl) GetInt(key string) int                           { return 0 }
+func GetIntSlice(key string) []int                             { return nil }
+func (o *Owl) GetIntSlice(key string) []int                    { return nil }
+func GetUint(key string) uint                                  { return 0 }
+func (o *Owl) GetUint(key string) uint                         { return 0 }
+func GetFloat64(key string) float64                            { return 0 }
+func (o *Owl) GetFloat64(key string) float64                   { return 0 }
+func GetBool(key string) bool                                  { return true }
+func (o *Owl) GetBool(key string) bool                         { return true }
+func GetTime(key string) time.Time                             { return time.Time{} }
+func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
+func GeteDuration(key string) time.Duration                    { return 0 }
+func (o *Owl) GeteDuration(key string) time.Duration           { return 0 }
+func GeteAll(key string) map[string]interface{}                { return nil }
+func (o *Owl) GeteAll(key string) map[string]interface{}       { return nil }
