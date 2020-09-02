@@ -2,9 +2,11 @@ package owl
 
 import (
 	"context"
-	"errors"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
+	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"sync"
 	"time"
 )
@@ -19,6 +21,7 @@ func init() {
 type Owl struct {
 	key      string
 	value    string
+	config   map[string]interface{}
 	filename string
 	filepath []string
 	client   *clientv3.Client
@@ -63,14 +66,59 @@ func (o *Owl) SetAddr(addr []string) {
 	o.client = client
 }
 
-func SetConfName(name string)          {}
-func (o *Owl) SetConfName(name string) {}
+func SetConfName(name string) { owl.SetConfName(name) }
+func (o *Owl) SetConfName(name string) {
+	o.lock.Lock()
+	defer o.lock.Unlock()
+	o.filename = name
+}
 
-func AddConfPath(path string)          {}
-func (o *Owl) AddConfPath(path string) {}
+func AddConfPath(path string) { owl.AddConfPath(path) }
+func (o *Owl) AddConfPath(path string) {
+	o.lock.Lock()
+	defer o.lock.Unlock()
+	o.filepath = append(o.filepath, path)
+}
 
-func ReadConf()          {}
-func (o *Owl) ReadConf() {}
+func ReadConf() error { return owl.ReadConf() }
+func (o *Owl) ReadConf() error {
+	if o.filename == "" && o.filepath == nil {
+		return errors.WithStack(errors.New("config name or config path in not set"))
+	}
+
+	file, err := o.findConfigFile()
+	if err != nil {
+		return err
+	}
+
+	content, err := ioutil.ReadFile(file)
+	if err != nil {
+		return err
+	}
+
+	err = yaml.Unmarshal(content, &o.config)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Owl) findConfigFile() (string, error) {
+	if o.filename == "" {
+		return "", errors.WithStack(errors.New("config name not set"))
+	}
+	if o.filepath == nil {
+		return "", errors.WithStack(errors.New("config path not set"))
+	}
+	for _, v := range o.filepath {
+		exist, _ := exists(v + o.filename)
+		if exist {
+			return v + o.filename, nil
+		}
+	}
+	return "", errors.New("file is not exist")
+
+}
 
 // SetKey set config key name in etcd.
 func SetKey(key string) { owl.SetKey(key) }
@@ -93,7 +141,7 @@ func (o *Owl) Get() (string, error) {
 
 	key := o.key
 	if key == "" {
-		return "", errors.New("")
+		return "", errors.New("error")
 	}
 	if o.value != "" {
 		return o.value, nil
@@ -197,5 +245,5 @@ func GetTime(key string) time.Time                             { return owl.GetT
 func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
 func GeteDuration(key string) time.Duration                    { return owl.GeteDuration(key) }
 func (o *Owl) GeteDuration(key string) time.Duration           { return 0 }
-func GetAll(key string) map[string]interface{}                 { return owl.GetAll(key) }
-func (o *Owl) GetAll(key string) map[string]interface{}        { return nil }
+func GetAll() map[string]interface{}                           { return owl.GetAll() }
+func (o *Owl) GetAll() map[string]interface{}                  { return o.config }
