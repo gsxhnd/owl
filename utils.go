@@ -1,6 +1,8 @@
 package owl
 
-import "os"
+import (
+	"os"
+)
 
 func exists(path string) (bool, error) {
 	stat, err := os.Stat(path)

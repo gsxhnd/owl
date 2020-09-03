@@ -2,6 +2,7 @@ package owl
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -43,5 +44,26 @@ func TestGetAll(t *testing.T) {
 	conf := GetAll()
 	if conf == nil {
 		t.Error("conf is nil")
+	}
+}
+
+func TestGetInterface(t *testing.T) {
+	tests := []struct {
+		name string
+		args string
+		want interface{}
+	}{
+		{name: "name", args: "name", want: "test"},
+		{name: "test01", args: "test.test01", want: "test01"},
+	}
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	_ = ReadConf()
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetInterface(tt.args); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetInterface() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }

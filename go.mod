@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/coreos/etcd v3.3.22+incompatible
+	github.com/gsxhnd/cast v1.3.2-0.20200903083226-662305f032b9
 	github.com/pkg/errors v0.9.1
 	go.etcd.io/etcd v0.0.0-20200716221548-4873f5516bd9 // indirect
 	gopkg.in/yaml.v2 v2.3.0

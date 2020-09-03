@@ -4,9 +4,11 @@ import (
 	"context"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
+	"github.com/gsxhnd/cast"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"strings"
 	"sync"
 	"time"
 )
@@ -221,8 +223,32 @@ func (o *Owl) Watcher(key string, c chan string) {
 	}
 }
 
-func GetInterface(key string) interface{}                      { return owl.GetInterface(key) }
-func (o *Owl) GetInterface(key string) interface{}             { return nil }
+func GetInterface(key string) interface{} { return owl.GetInterface(key) }
+func (o *Owl) GetInterface(key string) interface{} {
+	keys := strings.Split(key, ".")
+	return o.find(o.config, keys)
+}
+
+func (o *Owl) find(source map[string]interface{}, path []string) interface{} {
+	if len(path) == 0 {
+		return source
+	}
+	next, ok := source[path[0]]
+	if ok {
+		if len(path) == 1 {
+			return next
+		}
+		switch source[path[0]].(type) {
+		case map[interface{}]interface{}:
+			return o.find(cast.ToStringMap(source[path[0]]), path[1:])
+		case map[string]interface{}:
+			return o.find(source[path[0]].(map[string]interface{}), path[1:])
+		default:
+			return nil
+		}
+	}
+	return nil
+}
 func GetString(key string) string                              { return owl.GetString(key) }
 func (o *Owl) GetString(key string) string                     { return "" }
 func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
