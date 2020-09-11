@@ -1,4 +1,5 @@
 [![](https://img.shields.io/github/license/gsxhnd/owl)](https://opensource.org/licenses/MIT)
+![Test](https://github.com/gsxhnd/owl/workflows/Test/badge.svg)
 
 # owl
 Read and Put conf to etcd
