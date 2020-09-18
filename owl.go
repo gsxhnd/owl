@@ -249,6 +249,7 @@ func (o *Owl) find(source map[string]interface{}, path []string) interface{} {
 	}
 	return nil
 }
+
 func GetString(key string) string                              { return owl.GetString(key) }
 func (o *Owl) GetString(key string) string                     { return "" }
 func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
