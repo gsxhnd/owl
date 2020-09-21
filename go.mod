@@ -8,5 +8,5 @@ require (
 	github.com/pkg/errors v0.9.1
 	go.etcd.io/etcd v0.0.0-20200824191128-ae9734ed278b // indirect
 	gopkg.in/yaml.v2 v2.3.0
-	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )

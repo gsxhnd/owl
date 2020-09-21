@@ -6,6 +6,14 @@ import (
 	"testing"
 )
 
+func TestNew(t *testing.T) {
+	owlTest := New()
+	t.Log(&owlTest, &owl)
+	if &owlTest == &owl {
+		t.Error("use one instance")
+	}
+}
+
 func TestAddConfPath(t *testing.T) {
 	AddConfPath("1")
 	AddConfPath("2")
@@ -47,7 +55,7 @@ func TestGetAll(t *testing.T) {
 	}
 }
 
-func TestGetInterface(t *testing.T) {
+func TestGet(t *testing.T) {
 	tests := []struct {
 		name string
 		args string
@@ -61,7 +69,7 @@ func TestGetInterface(t *testing.T) {
 	_ = ReadConf()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := GetInterface(tt.args); !reflect.DeepEqual(got, tt.want) {
+			if got := Get(tt.args); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetInterface() = %v, want %v", got, tt.want)
 			}
 		})
