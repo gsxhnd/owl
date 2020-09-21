@@ -2,7 +2,7 @@
 
 ## v1.2.0
 
-- [chore] update etcd client version to v3.4.13
+- [chore] update etcd client version to v3.3.25
 - [chore] add cast dep
 - [test] add owl test
 
