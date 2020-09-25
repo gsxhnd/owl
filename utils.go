@@ -10,7 +10,7 @@ func exists(path string) (bool, error) {
 		return !stat.IsDir(), err
 	}
 	if os.IsNotExist(err) {
-		return false, nil
+		return false, err
 	}
 	return false, err
 }

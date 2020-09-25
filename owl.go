@@ -166,12 +166,9 @@ func (o *Owl) ReadConf() error {
 
 func (o *Owl) findConfigFile() (string, error) {
 	for _, v := range o.filepath {
-		exist, err := exists(v + o.filename)
+		exist, _ := exists(v + o.filename)
 		if exist {
 			return v + o.filename, nil
-		}
-		if err != nil {
-			return "", err
 		}
 	}
 	return "", errors.New("file is not exist")
