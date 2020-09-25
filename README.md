@@ -1,5 +1,6 @@
 [![](https://img.shields.io/github/license/gsxhnd/owl)](https://opensource.org/licenses/MIT)
 ![Test](https://github.com/gsxhnd/owl/workflows/Test/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/gsxhnd/owl/badge.svg)](https://coveralls.io/github/gsxhnd/owl)
 
 # owl
 Read and Put conf to etcd
