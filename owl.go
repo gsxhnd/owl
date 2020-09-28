@@ -188,30 +188,31 @@ func (o *Owl) Get(key string) interface{} {
 	keys := strings.Split(key, ".")
 	return o.find(o.config, keys)
 }
-func GetString(key string) string                              { return owl.GetString(key) }
-func (o *Owl) GetString(key string) string                     { return "" }
-func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
-func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
-func GetStringMapString(key string) map[string]string          { return owl.GetStringMapString(key) }
-func (o *Owl) GetStringMapString(key string) map[string]string { return nil }
-func GetStringSlice(key string) []string                       { return owl.GetStringSlice(key) }
-func (o *Owl) GetStringSlice(key string) []string              { return nil }
-func GetInt(key string) int                                    { return owl.GetInt(key) }
-func (o *Owl) GetInt(key string) int                           { return 0 }
-func GetIntSlice(key string) []int                             { return owl.GetIntSlice(key) }
-func (o *Owl) GetIntSlice(key string) []int                    { return nil }
-func GetUint(key string) uint                                  { return owl.GetUint(key) }
-func (o *Owl) GetUint(key string) uint                         { return 0 }
-func GetFloat64(key string) float64                            { return owl.GetFloat64(key) }
-func (o *Owl) GetFloat64(key string) float64                   { return 0 }
-func GetBool(key string) bool                                  { return owl.GetBool(key) }
-func (o *Owl) GetBool(key string) bool                         { return true }
-func GetTime(key string) time.Time                             { return owl.GetTime(key) }
-func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
-func GeteDuration(key string) time.Duration                    { return owl.GeteDuration(key) }
-func (o *Owl) GeteDuration(key string) time.Duration           { return 0 }
-func GetAll() map[string]interface{}                           { return owl.GetAll() }
-func (o *Owl) GetAll() map[string]interface{}                  { return o.config }
+
+//func GetString(key string) string                              { return owl.GetString(key) }
+//func (o *Owl) GetString(key string) string                     { return "" }
+//func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
+//func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
+//func GetStringMapString(key string) map[string]string          { return owl.GetStringMapString(key) }
+//func (o *Owl) GetStringMapString(key string) map[string]string { return nil }
+//func GetStringSlice(key string) []string                       { return owl.GetStringSlice(key) }
+//func (o *Owl) GetStringSlice(key string) []string              { return nil }
+//func GetInt(key string) int                                    { return owl.GetInt(key) }
+//func (o *Owl) GetInt(key string) int                           { return 0 }
+//func GetIntSlice(key string) []int                             { return owl.GetIntSlice(key) }
+//func (o *Owl) GetIntSlice(key string) []int                    { return nil }
+//func GetUint(key string) uint                                  { return owl.GetUint(key) }
+//func (o *Owl) GetUint(key string) uint                         { return 0 }
+//func GetFloat64(key string) float64                            { return owl.GetFloat64(key) }
+//func (o *Owl) GetFloat64(key string) float64                   { return 0 }
+//func GetBool(key string) bool                                  { return owl.GetBool(key) }
+//func (o *Owl) GetBool(key string) bool                         { return true }
+//func GetTime(key string) time.Time                             { return owl.GetTime(key) }
+//func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
+//func GeteDuration(key string) time.Duration                    { return owl.GeteDuration(key) }
+//func (o *Owl) GeteDuration(key string) time.Duration           { return 0 }
+func GetAll() map[string]interface{}          { return owl.GetAll() }
+func (o *Owl) GetAll() map[string]interface{} { return o.config }
 
 func (o *Owl) find(source map[string]interface{}, path []string) interface{} {
 	if len(path) == 0 {
