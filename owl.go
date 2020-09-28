@@ -61,15 +61,22 @@ func (o *Owl) SetRemoteAddr(addr []string) {
 	o.client = client
 }
 
-// PutRemote value into etcd.
-func PutRemote(key, value string) error { return owl.PutRemote(key, value) }
-func (o *Owl) PutRemote(key, value string) error {
+// GetRemoteKeys get keys from etcd by prefix
+func GetRemoteKeys(prefix string) ([]string, error) { return owl.GetRemoteKeys(prefix) }
+func (o *Owl) GetRemoteKeys(prefix string) ([]string, error) {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	_, err := o.client.Put(ctx, key, value)
+	resp, err := o.client.Get(ctx, prefix, clientv3.WithPrefix())
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	if resp == nil {
+		return nil, nil
+	}
+	var keys []string
+	for _, v := range resp.Kvs {
+		keys = append(keys, string(v.Key))
+	}
+	return keys, nil
 }
 
 // GetRemote get config content from etcd by key
@@ -89,22 +96,15 @@ func (o *Owl) GetRemote(key string) (string, error) {
 	return value, nil
 }
 
-// GetRemoteKeys get keys from etcd by prefix
-func GetRemoteKeys(prefix string) ([]string, error) { return owl.GetRemoteKeys(prefix) }
-func (o *Owl) GetRemoteKeys(prefix string) ([]string, error) {
+// PutRemote value into etcd.
+func PutRemote(key, value string) error { return owl.PutRemote(key, value) }
+func (o *Owl) PutRemote(key, value string) error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	resp, err := o.client.Get(ctx, prefix, clientv3.WithPrefix())
+	_, err := o.client.Put(ctx, key, value)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	if resp == nil {
-		return nil, nil
-	}
-	var keys []string
-	for _, v := range resp.Kvs {
-		keys = append(keys, string(v.Key))
-	}
-	return keys, nil
+	return nil
 }
 
 // Watcher watch key's value in etcd
