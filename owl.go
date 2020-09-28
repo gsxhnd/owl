@@ -211,6 +211,7 @@ func (o *Owl) Get(key string) interface{} {
 //func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
 //func GeteDuration(key string) time.Duration                    { return owl.GeteDuration(key) }
 //func (o *Owl) GeteDuration(key string) time.Duration           { return 0 }
+
 func GetAll() map[string]interface{}          { return owl.GetAll() }
 func (o *Owl) GetAll() map[string]interface{} { return o.config }
 
