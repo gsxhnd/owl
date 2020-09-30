@@ -16,12 +16,12 @@ jobs:
         env:
           NAME: etcd
           DATA-DIR: /etcd-data
-          ADVERTISE-CLIENT-URLS: http://etcd:2379
-          LISTEN-CLIENT-URLS: http://etcd:2379
-          INITIAL-ADVERTISE-PEER-URLS: http://etcd:2380
+          ADVERTISE-CLIENT-URLS: http://0.0.0.0:2379
+          LISTEN-CLIENT-URLS: http://0.0.0.0:2379
+          INITIAL-ADVERTISE-PEER-URLS: http://0.0.0.0:2380
           LISTEN-PEER-URLS: http://0.0.0.0:2380
           INITIAL-CLUSTER-TOKEN: docker-etcd
-          INITIAL-CLUSTER: etcd01=http://etcd:2380
+          INITIAL-CLUSTER: etcd01=http://0.0.0.0:2380
           INITIAL-CLUSTER-STATE: new
         options: >-
           --health-cmd="etcdctl endpoint health"
