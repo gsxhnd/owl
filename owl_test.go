@@ -71,7 +71,27 @@ func TestOwl_SetRemoteConfig(t *testing.T) {
 	}
 }
 
-func TestGetRemoteKeys(t *testing.T) {
+func TestPutRemote(t *testing.T) {
+	tests := []struct {
+		name    string
+		key     string
+		value   string
+		wantErr bool
+	}{
+		{"test01", "/test", "test", false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resetOwl()
+			owl.SetRemoteAddr([]string{"localhost:2379"})
+			err := PutRemote(tt.key, tt.value)
+			if !tt.wantErr {
+				assert.Nil(t, err)
+			}
+		})
+	}
+}
+func TestOwl_PutRemote(t *testing.T) {
 	tests := []struct {
 		name    string
 		wantErr bool
@@ -80,7 +100,28 @@ func TestGetRemoteKeys(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		})
+	}
+}
 
+func TestGetRemoteKeys(t *testing.T) {
+	tests := []struct {
+		name    string
+		prefix  string
+		want    []string
+		wantErr bool
+	}{
+		{"test", "/test", []string{"/test"}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resetOwl()
+			owl.SetRemoteAddr([]string{"localhost:2379"})
+			keys, err := GetRemoteKeys(tt.prefix)
+			if !tt.wantErr {
+				assert.Nil(t, err)
+			}
+			assert.Equal(t, tt.want, keys)
 		})
 	}
 }
@@ -115,36 +156,6 @@ func TestGetRemote(t *testing.T) {
 	}
 }
 func TestOwl_GetRemote(t *testing.T) {
-	tests := []struct {
-		name    string
-		wantErr bool
-	}{
-		{},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-		})
-	}
-}
-
-func TestPutRemote(t *testing.T) {
-	type args struct {
-		key   string
-		value string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		{},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-		})
-	}
-}
-func TestOwl_PutRemote(t *testing.T) {
 	tests := []struct {
 		name    string
 		wantErr bool
@@ -281,8 +292,6 @@ func TestReadInConf(t *testing.T) {
 	}
 }
 func TestOwl_ReadInConf(t *testing.T) {
-	type args struct {
-	}
 	tests := []struct {
 		name    string
 		content []byte
