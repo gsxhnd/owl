@@ -23,6 +23,12 @@ jobs:
           INITIAL-CLUSTER-TOKEN: docker-etcd
           INITIAL-CLUSTER: etcd01=http://etcd:2380
           INITIAL-CLUSTER-STATE: new
+        options: >-
+          --health-cmd="etcdctl endpoint health"
+          --health-start-period 10s
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
