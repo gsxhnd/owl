@@ -13,17 +13,16 @@ jobs:
         ports:
           - 2379:2379
           - 2380:2380
-        options: /usr/local/bin/etcd
-          -name etcd01
-          -data-dir /etcd-data
-          -advertise-client-urls http://etcd:2379
-          -listen-client-urls http://0.0.0.0:2379
-          -initial-advertise-peer-urls http://etcd:2380
-          -listen-peer-urls http://0.0.0.0:2380
-          -initial-cluster-token docker-etcd
-          -initial-cluster etcd01=http://etcd:2380
-          --initial-cluster etcd01=http://etcd:2380
-          -initial-cluster-state new
+        env:
+          NAME: etcd
+          DATA-DIR: /etcd-data
+          ADVERTISE-CLIENT-URLS: http://etcd:2379
+          LISTEN-CLIENT-URLS: http://etcd:2379
+          INITIAL-ADVERTISE-PEER-URLS: http://etcd:2380
+          LISTEN-PEER-URLS: http://0.0.0.0:2380
+          INITIAL-CLUSTER-TOKEN: docker-etcd
+          INITIAL-CLUSTER: etcd01=http://etcd:2380
+          INITIAL-CLUSTER-STATE: new
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
