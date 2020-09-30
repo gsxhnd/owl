@@ -10,20 +10,20 @@ jobs:
     services:
       etcd:
         image: quay.io/coreos/etcd:v3.4.0
-      ports:
-        - 2379:2379
-        - 2380:2380
-      options: /usr/local/bin/etcd
-        -name etcd01
-        -data-dir /etcd-data
-        -advertise-client-urls http://etcd01.gsxhnd.xyz:2379
-        -listen-client-urls http://0.0.0.0:2379
-        -initial-advertise-peer-urls http://etcd01.gsxhnd.xyz:2380
-        -listen-peer-urls http://0.0.0.0:2380
-        -initial-cluster-token docker-etcd
-        -initial-cluster etcd01=http://etcd01.gsxhnd.xyz:2380
-        --initial-cluster etcd01=http://etcd01.gsxhnd.xyz:2380
-        -initial-cluster-state new
+        ports:
+          - 2379:2379
+          - 2380:2380
+        options: /usr/local/bin/etcd
+          -name etcd01
+          -data-dir /etcd-data
+          -advertise-client-urls http://etcd01.gsxhnd.xyz:2379
+          -listen-client-urls http://0.0.0.0:2379
+          -initial-advertise-peer-urls http://etcd01.gsxhnd.xyz:2380
+          -listen-peer-urls http://0.0.0.0:2380
+          -initial-cluster-token docker-etcd
+          -initial-cluster etcd01=http://etcd01.gsxhnd.xyz:2380
+          --initial-cluster etcd01=http://etcd01.gsxhnd.xyz:2380
+          -initial-cluster-state new
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
