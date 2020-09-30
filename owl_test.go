@@ -83,7 +83,7 @@ func TestPutRemote(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			resetOwl()
-			owl.SetRemoteAddr([]string{"localhost:2379"})
+			owl.SetRemoteAddr([]string{":2379"})
 			err := PutRemote(tt.key, tt.value)
 			if !tt.wantErr {
 				assert.Nil(t, err)
