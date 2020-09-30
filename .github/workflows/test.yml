@@ -13,21 +13,13 @@ jobs:
         ports:
           - 2379:2379
           - 2380:2380
-        env:
-          NAME: etcd
-          ADVERTISE-CLIENT-URLS: http://0.0.0.0:2379
-          LISTEN-CLIENT-URLS: http://0.0.0.0:2379
-          INITIAL-ADVERTISE-PEER-URLS: http://0.0.0.0:2380
-          LISTEN-PEER-URLS: http://0.0.0.0:2380
-          INITIAL-CLUSTER-TOKEN: docker-etcd
-          INITIAL-CLUSTER: etcd01=http://0.0.0.0:2380
-          INITIAL-CLUSTER-STATE: new
         options: >-
           --health-cmd="etcdctl endpoint health"
           --health-start-period 10s
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
+          --entrypoint /usr/local/bin/etcd -initial-cluster-state new
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
