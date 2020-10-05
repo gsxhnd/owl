@@ -33,17 +33,47 @@ func TestNew(t *testing.T) {
 }
 
 func TestSetRemoteAddr(t *testing.T) {
-	SetRemoteAddr([]string{"localhost:2379"})
-	assert.NotNil(t, owl.client)
-}
-func TestOwl_SetRemoteAddr(t *testing.T) {
 	tests := []struct {
-		name string
+		name    string
+		addr    []string
+		wantErr bool
 	}{
-		{},
+		{"not_err", []string{"localhost:2379"}, false},
+		{"err", []string{"192.168.1.1:2379"}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			resetOwl()
+			err := SetRemoteAddr(tt.addr)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
+	err := SetRemoteAddr([]string{"localhost:2379"})
+	assert.NotNil(t, owl.client)
+	assert.Nil(t, err)
+}
+func TestOwl_SetRemoteAddr(t *testing.T) {
+	tests := []struct {
+		name    string
+		addr    []string
+		wantErr bool
+	}{
+		{"not_err", []string{"localhost:2379"}, false},
+		{"err", []string{"192.168.1.1:2379"}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			err := o.SetRemoteAddr(tt.addr)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
 		})
 	}
 }
@@ -78,14 +108,15 @@ func TestPutRemote(t *testing.T) {
 		value   string
 		wantErr bool
 	}{
-		{"test01", "/test", "test", false},
+		{"test_success", "/test", "test", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			resetOwl()
-			owl.SetRemoteAddr([]string{"localhost:2379"})
+			_ = SetRemoteAddr([]string{"localhost:2379"})
 			err := PutRemote(tt.key, tt.value)
-			if !tt.wantErr {
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
 				assert.Nil(t, err)
 			}
 		})
@@ -94,12 +125,22 @@ func TestPutRemote(t *testing.T) {
 func TestOwl_PutRemote(t *testing.T) {
 	tests := []struct {
 		name    string
+		key     string
+		value   string
 		wantErr bool
 	}{
-		{},
+		{"test_success", "/test", "test", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			_ = o.SetRemoteAddr([]string{"localhost:2379"})
+			err := o.PutRemote(tt.key, tt.value)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
 		})
 	}
 }
@@ -115,67 +156,85 @@ func TestGetRemoteKeys(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			resetOwl()
-			owl.SetRemoteAddr([]string{"localhost:2379"})
+			_ = SetRemoteAddr([]string{"localhost:2379"})
 			keys, err := GetRemoteKeys(tt.prefix)
-			if !tt.wantErr {
-				assert.Nil(t, err)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Equal(t, tt.want, keys)
 			}
-			assert.Equal(t, tt.want, keys)
 		})
 	}
 }
 func TestOwl_GetRemoteKeys(t *testing.T) {
 	tests := []struct {
 		name    string
+		prefix  string
+		want    []string
 		wantErr bool
 	}{
-		{},
+		{"test", "/test", []string{"/test"}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			_ = o.SetRemoteAddr([]string{"localhost:2379"})
+			keys, err := o.GetRemoteKeys(tt.prefix)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Equal(t, tt.want, keys)
+			}
 		})
 	}
 }
 
 func TestGetRemote(t *testing.T) {
-	type args struct {
-		key   string
-		value string
-	}
 	tests := []struct {
 		name    string
-		args    args
+		key     string
+		want    string
 		wantErr bool
 	}{
-		{},
+		{"test_success", "/test", "test", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			v, err := GetRemote(tt.key)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Equal(t, tt.want, v)
+			}
 		})
 	}
 }
 func TestOwl_GetRemote(t *testing.T) {
 	tests := []struct {
 		name    string
+		key     string
+		want    string
 		wantErr bool
 	}{
-		{},
+		{"test_success", "/test", "test", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			_ = o.SetRemoteAddr([]string{"localhost:2379"})
+			v, err := o.GetRemote(tt.key)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Equal(t, tt.want, v)
+			}
 		})
 	}
 }
 
 func TestWatcher(t *testing.T) {
-	type args struct {
-		key   string
-		value string
-	}
 	tests := []struct {
 		name    string
-		args    args
 		wantErr bool
 	}{
 		{},

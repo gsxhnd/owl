@@ -47,8 +47,8 @@ func (o *Owl) SetRemoteConfig(config clientv3.Config) {
 }
 
 // SetRemoteAddr set url for the etcd.
-func SetRemoteAddr(addr []string) { owl.SetRemoteAddr(addr) }
-func (o *Owl) SetRemoteAddr(addr []string) {
+func SetRemoteAddr(addr []string) error { return owl.SetRemoteAddr(addr) }
+func (o *Owl) SetRemoteAddr(addr []string) error {
 	conf := clientv3.Config{
 		Endpoints:        addr,
 		AutoSyncInterval: 0,
@@ -56,9 +56,16 @@ func (o *Owl) SetRemoteAddr(addr []string) {
 	}
 	client, err := clientv3.New(conf)
 	if err != nil {
-		client = nil
+		return err
+	}
+
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	_, err = client.Status(ctx, addr[0])
+	if err != nil {
+		return err
 	}
 	o.client = client
+	return nil
 }
 
 // GetRemoteKeys get keys from etcd by prefix
