@@ -35,17 +35,6 @@ func New() *Owl {
 	return &Owl{}
 }
 
-// SetRemoteConfig set configure for the etcd. The
-// client include etcd url
-func SetRemoteConfig(config clientv3.Config) { owl.SetRemoteConfig(config) }
-func (o *Owl) SetRemoteConfig(config clientv3.Config) {
-	client, err := clientv3.New(config)
-	if err != nil {
-		client = nil
-	}
-	o.client = client
-}
-
 // SetRemoteAddr set url for the etcd.
 func SetRemoteAddr(addr []string) error { return owl.SetRemoteAddr(addr) }
 func (o *Owl) SetRemoteAddr(addr []string) error {

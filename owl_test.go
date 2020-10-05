@@ -78,29 +78,6 @@ func TestOwl_SetRemoteAddr(t *testing.T) {
 	}
 }
 
-func TestSetRemoteConfig(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		{},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-		})
-	}
-}
-func TestOwl_SetRemoteConfig(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		{},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-		})
-	}
-}
-
 func TestPutRemote(t *testing.T) {
 	tests := []struct {
 		name    string
