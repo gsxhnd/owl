@@ -389,6 +389,48 @@ func TestOwl_Get(t *testing.T) {
 		})
 	}
 }
+
+func TestGetString(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want string
+	}{
+		{"name", "name", "test"},
+		{"test01", "test.test01", "test01"},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, GetString(tt.key), tt.want)
+		})
+	}
+}
+func TestOwl_GetString(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want string
+	}{
+		{"name", "name", "test"},
+		{"test01", "test.test01", "test01"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			o.SetConfName("test.yaml")
+			o.AddConfPath("./mock/")
+			err := ReadConf()
+			assert.Nil(t, err)
+			assert.Equal(t, o.GetString(tt.key), tt.want)
+		})
+	}
+}
+
 func TestGetAll(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -433,6 +475,7 @@ func TestOwl_GetAll(t *testing.T) {
 		})
 	}
 }
+
 func TestOwl_findConfigFile(t *testing.T) {
 	tests := []struct {
 		name     string

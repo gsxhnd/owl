@@ -185,8 +185,11 @@ func (o *Owl) Get(key string) interface{} {
 	return o.find(o.config, keys)
 }
 
-//func GetString(key string) string                              { return owl.GetString(key) }
-//func (o *Owl) GetString(key string) string                     { return "" }
+func GetString(key string) string { return owl.GetString(key) }
+func (o *Owl) GetString(key string) string {
+	return cast.ToString(o.Get(key))
+}
+
 //func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
 //func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
 //func GetStringMapString(key string) map[string]string          { return owl.GetStringMapString(key) }
