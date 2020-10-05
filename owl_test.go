@@ -424,7 +424,7 @@ func TestOwl_GetString(t *testing.T) {
 			o := New()
 			o.SetConfName("test.yaml")
 			o.AddConfPath("./mock/")
-			err := ReadConf()
+			err := o.ReadConf()
 			assert.Nil(t, err)
 			assert.Equal(t, o.GetString(tt.key), tt.want)
 		})

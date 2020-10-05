@@ -185,6 +185,7 @@ func (o *Owl) Get(key string) interface{} {
 	return o.find(o.config, keys)
 }
 
+// GetString returns the value associated with the key as a string.
 func GetString(key string) string { return owl.GetString(key) }
 func (o *Owl) GetString(key string) string {
 	return cast.ToString(o.Get(key))
