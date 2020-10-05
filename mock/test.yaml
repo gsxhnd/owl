@@ -3,3 +3,6 @@ addr: :8080
 test:
   test01: test01
   test02: test02
+test_int:
+  test01: 1
+  test02: 2

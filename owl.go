@@ -191,14 +191,18 @@ func (o *Owl) GetString(key string) string {
 	return cast.ToString(o.Get(key))
 }
 
+func GetInt(key string) int { return owl.GetInt(key) }
+func (o *Owl) GetInt(key string) int {
+	return cast.ToInt(o.Get(key))
+}
+
 //func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
 //func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
 //func GetStringMapString(key string) map[string]string          { return owl.GetStringMapString(key) }
 //func (o *Owl) GetStringMapString(key string) map[string]string { return nil }
 //func GetStringSlice(key string) []string                       { return owl.GetStringSlice(key) }
 //func (o *Owl) GetStringSlice(key string) []string              { return nil }
-//func GetInt(key string) int                                    { return owl.GetInt(key) }
-//func (o *Owl) GetInt(key string) int                           { return 0 }
+
 //func GetIntSlice(key string) []int                             { return owl.GetIntSlice(key) }
 //func (o *Owl) GetIntSlice(key string) []int                    { return nil }
 //func GetUint(key string) uint                                  { return owl.GetUint(key) }
