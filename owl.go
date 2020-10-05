@@ -35,20 +35,9 @@ func New() *Owl {
 	return &Owl{}
 }
 
-// SetRemoteConfig set configure for the etcd. The
-// client include etcd url
-func SetRemoteConfig(config clientv3.Config) { owl.SetRemoteConfig(config) }
-func (o *Owl) SetRemoteConfig(config clientv3.Config) {
-	client, err := clientv3.New(config)
-	if err != nil {
-		client = nil
-	}
-	o.client = client
-}
-
 // SetRemoteAddr set url for the etcd.
-func SetRemoteAddr(addr []string) { owl.SetRemoteAddr(addr) }
-func (o *Owl) SetRemoteAddr(addr []string) {
+func SetRemoteAddr(addr []string) error { return owl.SetRemoteAddr(addr) }
+func (o *Owl) SetRemoteAddr(addr []string) error {
 	conf := clientv3.Config{
 		Endpoints:        addr,
 		AutoSyncInterval: 0,
@@ -56,9 +45,16 @@ func (o *Owl) SetRemoteAddr(addr []string) {
 	}
 	client, err := clientv3.New(conf)
 	if err != nil {
-		client = nil
+		return err
+	}
+
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	_, err = client.Status(ctx, addr[0])
+	if err != nil {
+		return err
 	}
 	o.client = client
+	return nil
 }
 
 // GetRemoteKeys get keys from etcd by prefix
@@ -189,16 +185,24 @@ func (o *Owl) Get(key string) interface{} {
 	return o.find(o.config, keys)
 }
 
-//func GetString(key string) string                              { return owl.GetString(key) }
-//func (o *Owl) GetString(key string) string                     { return "" }
+// GetString returns the value associated with the key as a string.
+func GetString(key string) string { return owl.GetString(key) }
+func (o *Owl) GetString(key string) string {
+	return cast.ToString(o.Get(key))
+}
+
+func GetInt(key string) int { return owl.GetInt(key) }
+func (o *Owl) GetInt(key string) int {
+	return cast.ToInt(o.Get(key))
+}
+
 //func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
 //func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
 //func GetStringMapString(key string) map[string]string          { return owl.GetStringMapString(key) }
 //func (o *Owl) GetStringMapString(key string) map[string]string { return nil }
 //func GetStringSlice(key string) []string                       { return owl.GetStringSlice(key) }
 //func (o *Owl) GetStringSlice(key string) []string              { return nil }
-//func GetInt(key string) int                                    { return owl.GetInt(key) }
-//func (o *Owl) GetInt(key string) int                           { return 0 }
+
 //func GetIntSlice(key string) []int                             { return owl.GetIntSlice(key) }
 //func (o *Owl) GetIntSlice(key string) []int                    { return nil }
 //func GetUint(key string) uint                                  { return owl.GetUint(key) }

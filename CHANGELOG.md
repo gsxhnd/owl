@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.0
+- [feat] add `GetString`
+- [feat] add `GetInt`
+
 ## v1.2.0
 
 - [chore] update etcd client version to v3.3.25
@@ -17,6 +21,3 @@
 
 - [feat] add get keys
 
-## v1.0.0
-
-release v1.0.0
