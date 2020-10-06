@@ -722,9 +722,9 @@ func TestGetStringMapString(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want map[string]interface{}
+		want map[string]string
 	}{
-		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
+		{"test_01", "test_string_map", map[string]string{"test01": "test01", "test02": "test02"}},
 	}
 	resetOwl()
 	SetConfName("test.yaml")
@@ -741,9 +741,9 @@ func TestOwl_GetStringMapString(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want map[string]interface{}
+		want map[string]string
 	}{
-		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
+		{"test_01", "test_string_map", map[string]string{"test01": "test01", "test02": "test02"}},
 	}
 	o := New()
 	o.SetConfName("test.yaml")
