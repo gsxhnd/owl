@@ -6,3 +6,6 @@ test:
 test_int:
   test01: 1
   test02: 2
+test_bool:
+  test01: true
+  test02: flase

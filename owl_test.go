@@ -560,6 +560,47 @@ func TestOwl_GetFloat64(t *testing.T) {
 	}
 }
 
+func TestGetBool(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want bool
+	}{
+		{"test_01", "test_bool.test01", true},
+		{"test_02", "test_bool.test02", false},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, GetBool(tt.key), tt.want)
+		})
+	}
+}
+func TestOwl_GetBool(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want bool
+	}{
+		{"test_01", "test_bool.test01", true},
+		{"test_02", "test_bool.test02", false},
+	}
+	o := New()
+	o.SetConfName("test.yaml")
+	o.AddConfPath("./mock/")
+	err := o.ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, o.GetBool(tt.key), tt.want)
+		})
+	}
+}
+
 func TestGetAll(t *testing.T) {
 	tests := []struct {
 		name    string

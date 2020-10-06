@@ -3,6 +3,8 @@
 ## v1.3.0
 - [feat] add `GetString`
 - [feat] add `GetInt`
+- [feat] add `GetFloat64`
+- [feat] add `GetBool`
 
 ## v1.2.0
 
