@@ -646,7 +646,7 @@ func TestGetIntSlice(t *testing.T) {
 		key  string
 		want []int
 	}{
-		{"test_01", "test_string_slice.test01", []int{1, 2}},
+		{"test_01", "test_int_slice.test01", []int{1, 2}},
 	}
 	resetOwl()
 	SetConfName("test.yaml")
@@ -655,7 +655,7 @@ func TestGetIntSlice(t *testing.T) {
 	assert.Nil(t, err)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, GetIntSlice(tt.key), tt.want)
+			assert.Equal(t, tt.want, GetIntSlice(tt.key))
 		})
 	}
 }
@@ -665,7 +665,7 @@ func TestOwl_GetIntSlice(t *testing.T) {
 		key  string
 		want []int
 	}{
-		{"test_01", "test_string_slice.test01", []int{1, 2}},
+		{"test_01", "test_int_slice.test01", []int{1, 2}},
 	}
 	o := New()
 	o.SetConfName("test.yaml")
@@ -674,7 +674,85 @@ func TestOwl_GetIntSlice(t *testing.T) {
 	assert.Nil(t, err)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetIntSlice(tt.key), tt.want)
+			assert.Equal(t, tt.want, o.GetIntSlice(tt.key))
+		})
+	}
+}
+
+func TestGetStringMap(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want map[string]interface{}
+	}{
+		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, GetStringMap(tt.key))
+		})
+	}
+}
+func TestOwl_GetStringMap(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want map[string]interface{}
+	}{
+		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
+	}
+	o := New()
+	o.SetConfName("test.yaml")
+	o.AddConfPath("./mock/")
+	err := o.ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, o.GetStringMap(tt.key))
+		})
+	}
+}
+
+func TestGetStringMapString(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want map[string]interface{}
+	}{
+		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, GetStringMapString(tt.key))
+		})
+	}
+}
+func TestOwl_GetStringMapString(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want map[string]interface{}
+	}{
+		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
+	}
+	o := New()
+	o.SetConfName("test.yaml")
+	o.AddConfPath("./mock/")
+	err := o.ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, o.GetStringMapString(tt.key))
 		})
 	}
 }

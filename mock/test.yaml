@@ -17,3 +17,6 @@ test_string_int:
   test01:
     - 1
     - 2
+test_string_map:
+  test01: test01
+  test02: test02

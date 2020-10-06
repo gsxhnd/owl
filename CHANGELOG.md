@@ -7,6 +7,8 @@
 - [feat] add `GetBool`
 - [feat] add `GetStringSlice`
 - [feat] add `GetIntSlice`
+- [feat] add `GetStringMap`
+- [feat] add `GetStringMapString`
 
 ## v1.2.0
 
