@@ -499,7 +499,7 @@ func TestOwl_GetUInt(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want int
+		want uint
 	}{
 		{"test_01", "test_int.test01", 1},
 		{"test_02", "test_int.test02", 2},
