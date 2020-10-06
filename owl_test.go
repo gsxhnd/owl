@@ -499,7 +499,7 @@ func TestOwl_GetUInt(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want uint
+		want float64
 	}{
 		{"test_01", "test_int.test01", 1},
 		{"test_02", "test_int.test02", 2},
@@ -513,6 +513,49 @@ func TestOwl_GetUInt(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, o.GetUint(tt.key), tt.want)
+		})
+	}
+}
+
+func TestGetFloat64(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want uint
+	}{
+		{"test_01", "test_int.test01", 1},
+		{"test_02", "test_int.test02", 2},
+		{"test_03", "test_int.test03", 0},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, GetFloat64(tt.key), tt.want)
+		})
+	}
+}
+func TestOwl_GetFloat64(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want float64
+	}{
+		{"test_01", "test_int.test01", 1},
+		{"test_02", "test_int.test02", 2},
+		{"test_03", "test_int.test03", 0},
+	}
+	o := New()
+	o.SetConfName("test.yaml")
+	o.AddConfPath("./mock/")
+	err := o.ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, o.GetFloat64(tt.key), tt.want)
 		})
 	}
 }

@@ -201,20 +201,37 @@ func (o *Owl) GetUint(key string) uint {
 	return cast.ToUint(o.Get(key))
 }
 
-//func GetStringMap(key string) map[string]interface{}           { return owl.GetStringMap(key) }
-//func (o *Owl) GetStringMap(key string) map[string]interface{}  { return nil }
-//func GetStringMapString(key string) map[string]string          { return owl.GetStringMapString(key) }
-//func (o *Owl) GetStringMapString(key string) map[string]string { return nil }
-//func GetStringSlice(key string) []string                       { return owl.GetStringSlice(key) }
-//func (o *Owl) GetStringSlice(key string) []string              { return nil }
+func GetFloat64(key string) float64 { return owl.GetFloat64(key) }
+func (o *Owl) GetFloat64(key string) float64 {
+	return cast.ToFloat64(o.Get(key))
+}
 
-//func GetIntSlice(key string) []int                             { return owl.GetIntSlice(key) }
-//func (o *Owl) GetIntSlice(key string) []int                    { return nil }
+func GetBool(key string) bool { return owl.GetBool(key) }
+func (o *Owl) GetBool(key string) bool {
+	return cast.ToBool(o.Get(key))
+}
 
-//func GetFloat64(key string) float64                            { return owl.GetFloat64(key) }
-//func (o *Owl) GetFloat64(key string) float64                   { return 0 }
-//func GetBool(key string) bool                                  { return owl.GetBool(key) }
-//func (o *Owl) GetBool(key string) bool                         { return true }
+func GetStringSlice(key string) []string { return owl.GetStringSlice(key) }
+func (o *Owl) GetStringSlice(key string) []string {
+	return cast.ToStringSlice(o.Get(key))
+}
+
+func GetIntSlice(key string) []int { return owl.GetIntSlice(key) }
+func (o *Owl) GetIntSlice(key string) []int {
+	return cast.ToIntSlice(o.Get(key))
+}
+
+func GetStringMap(key string) map[string]interface{} { return owl.GetStringMap(key) }
+func (o *Owl) GetStringMap(key string) map[string]interface{} {
+	return cast.ToStringMap(o.Get(key))
+}
+
+func GetStringMapString(key string) map[string]string { return owl.GetStringMapString(key) }
+func (o *Owl) GetStringMapString(key string) map[string]string {
+	return cast.ToStringMapString(o.Get(key))
+}
+
+// TODO
 //func GetTime(key string) time.Time                             { return owl.GetTime(key) }
 //func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
 //func GeteDuration(key string) time.Duration                    { return owl.GeteDuration(key) }
