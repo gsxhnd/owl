@@ -499,7 +499,7 @@ func TestOwl_GetUInt(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want float64
+		want uint64
 	}{
 		{"test_01", "test_int.test01", 1},
 		{"test_02", "test_int.test02", 2},
@@ -521,7 +521,7 @@ func TestGetFloat64(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want uint
+		want float64
 	}{
 		{"test_01", "test_int.test01", 1},
 		{"test_02", "test_int.test02", 2},
