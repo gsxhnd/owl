@@ -3,6 +3,12 @@
 ## v1.3.0
 - [feat] add `GetString`
 - [feat] add `GetInt`
+- [feat] add `GetFloat64`
+- [feat] add `GetBool`
+- [feat] add `GetStringSlice`
+- [feat] add `GetIntSlice`
+- [feat] add `GetStringMap`
+- [feat] add `GetStringMapString`
 
 ## v1.2.0
 

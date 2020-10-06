@@ -4,6 +4,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/gsxhnd/owl)](https://goreportcard.com/report/github.com/gsxhnd/owl)
 
 # owl
+
+[![DOC](https://img.shields.io/badge/-DOC-brightgreen)](https://pkg.go.dev/github.com/gsxhnd/owl)
+
 Read and Put conf to etcd
 
 You can use owl as a command line tool [owl-cli](https://github.com/gsxhnd/owl-cli) or as a  library
