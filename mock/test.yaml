@@ -13,3 +13,7 @@ test_string_slice:
   test01:
     - test1
     - test2
+test_string_int:
+  test01:
+    - 1
+    - 2
