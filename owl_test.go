@@ -499,7 +499,7 @@ func TestOwl_GetUInt(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
-		want uint64
+		want uint
 	}{
 		{"test_01", "test_int.test01", 1},
 		{"test_02", "test_int.test02", 2},
@@ -597,6 +597,45 @@ func TestOwl_GetBool(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, o.GetBool(tt.key), tt.want)
+		})
+	}
+}
+
+func TestGetStringSlice(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want []string
+	}{
+		{"test_01", "test_string_slice.test01", []string{"test1,test2"}},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, GetStringSlice(tt.key), tt.want)
+		})
+	}
+}
+func TestOwl_GetStringSlice(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want []string
+	}{
+		{"test_01", "test_string_slice.test01", []string{"test1,test2"}},
+	}
+	o := New()
+	o.SetConfName("test.yaml")
+	o.AddConfPath("./mock/")
+	err := o.ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, o.GetStringSlice(tt.key), tt.want)
 		})
 	}
 }

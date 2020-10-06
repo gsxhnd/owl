@@ -5,6 +5,7 @@
 - [feat] add `GetInt`
 - [feat] add `GetFloat64`
 - [feat] add `GetBool`
+- [feat] add `GetStringSlice`
 
 ## v1.2.0
 

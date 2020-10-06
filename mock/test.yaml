@@ -9,3 +9,7 @@ test_int:
 test_bool:
   test01: true
   test02: flase
+test_string_slice:
+  test01:
+    - test1
+    - test2
