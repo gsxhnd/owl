@@ -211,25 +211,47 @@ func TestOwl_GetRemote(t *testing.T) {
 
 func TestWatcher(t *testing.T) {
 	tests := []struct {
-		name    string
-		wantErr bool
+		name string
+		key  string
+		want string
 	}{
-		{},
+		{"test_watch", "/t1", "t1"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			resetOwl()
+			_ = SetRemoteAddr([]string{"localhost:2379"})
+			c := make(chan string)
+			var s string
+			go Watcher(tt.key, c)
+			_ = PutRemote(tt.key, tt.want)
+			select {
+			case s = <-c:
+				assert.Equal(t, tt.want, s)
+			}
 		})
 	}
 }
 func TestOwl_Watcher(t *testing.T) {
 	tests := []struct {
-		name    string
-		wantErr bool
+		name string
+		key  string
+		want string
 	}{
-		{},
+		{"test_watch", "/t1", "t1"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			_ = o.SetRemoteAddr([]string{"localhost:2379"})
+			c := make(chan string)
+			var s string
+			go o.Watcher(tt.key, c)
+			_ = o.PutRemote(tt.key, tt.want)
+			select {
+			case s = <-c:
+				assert.Equal(t, tt.want, s)
+			}
 		})
 	}
 }
