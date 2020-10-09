@@ -224,11 +224,14 @@ func TestWatcher(t *testing.T) {
 			c := make(chan string)
 			var s string
 			go Watcher(tt.key, c)
+
+			go func() {
+				select {
+				case s = <-c:
+					assert.Equal(t, tt.want, s)
+				}
+			}()
 			_ = PutRemote(tt.key, tt.want)
-			select {
-			case s = <-c:
-				assert.Equal(t, tt.want, s)
-			}
 		})
 	}
 }
@@ -247,11 +250,14 @@ func TestOwl_Watcher(t *testing.T) {
 			c := make(chan string)
 			var s string
 			go o.Watcher(tt.key, c)
+			go func() {
+				select {
+				case s = <-c:
+					assert.Equal(t, tt.want, s)
+				}
+			}()
 			_ = o.PutRemote(tt.key, tt.want)
-			select {
-			case s = <-c:
-				assert.Equal(t, tt.want, s)
-			}
+
 		})
 	}
 }
@@ -310,23 +316,56 @@ func TestOwl_SetConfName(t *testing.T) {
 }
 
 func TestReadConf(t *testing.T) {
-	AddConfPath("./mock/")
-	SetConfName("test.yaml")
-	err := ReadConf()
-	assert.Nil(t, err)
-	SetConfName("test1.yaml")
-	err = ReadConf()
-	assert.Error(t, err)
+	tests := []struct {
+		name     string
+		path     string
+		filename string
+		wantErr  bool
+	}{
+		{"a", "./mock/", "test.yaml", false},
+		{"b", "./mock/", "test1.yaml", true},
+		{"c", "./mock/", "", true},
+		{"d", "", "test1.yaml", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resetOwl()
+			AddConfPath(tt.path)
+			SetConfName(tt.filename)
+			err := ReadConf()
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
 }
 func TestOwl_ReadConf(t *testing.T) {
-	o := New()
-	o.AddConfPath("./mock/")
-	o.SetConfName("test.yaml")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	o.SetConfName("test1.yaml")
-	err = o.ReadConf()
-	assert.Error(t, err)
+	tests := []struct {
+		name     string
+		path     string
+		filename string
+		wantErr  bool
+	}{
+		{"a", "./mock/", "test.yaml", false},
+		{"b", "./mock/", "test1.yaml", true},
+		{"c", "./mock/", "", true},
+		{"d", "", "test1.yaml", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			o.AddConfPath(tt.path)
+			o.SetConfName(tt.filename)
+			err := o.ReadConf()
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
 }
 
 func TestReadInConf(t *testing.T) {
@@ -890,6 +929,24 @@ func TestOwl_findConfigFile(t *testing.T) {
 			} else {
 				assert.Nil(t, err)
 			}
+		})
+	}
+}
+
+func TestOwl_find(t *testing.T) {
+	tests := []struct {
+		name   string
+		source map[string]interface{}
+		path   []string
+		want   interface{}
+	}{
+		{"a", map[string]interface{}{"1": 1}, nil, map[string]interface{}{"1": 1}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := New()
+			a := o.find(tt.source, tt.path)
+			assert.Equal(t, tt.want, a)
 		})
 	}
 }
