@@ -474,6 +474,49 @@ func TestOwl_GetInt(t *testing.T) {
 	}
 }
 
+func TestGetInt64(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want int64
+	}{
+		{"test_01", "test_int.test01", 1},
+		{"test_02", "test_int.test02", 2},
+		{"test_03", "test_int.test03", 0},
+	}
+	resetOwl()
+	SetConfName("test.yaml")
+	AddConfPath("./mock/")
+	err := ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, GetInt64(tt.key), tt.want)
+		})
+	}
+}
+func TestOwl_GetInt64(t *testing.T) {
+	tests := []struct {
+		name string
+		key  string
+		want int64
+	}{
+		{"test_01", "test_int.test01", 1},
+		{"test_02", "test_int.test02", 2},
+		{"test_03", "test_int.test03", 0},
+	}
+	o := New()
+	o.SetConfName("test.yaml")
+	o.AddConfPath("./mock/")
+	err := o.ReadConf()
+	assert.Nil(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, o.GetInt64(tt.key), tt.want)
+		})
+	}
+}
+
 func TestGetUInt(t *testing.T) {
 	tests := []struct {
 		name string
