@@ -9,6 +9,7 @@
 - [feat] add `GetIntSlice`
 - [feat] add `GetStringMap`
 - [feat] add `GetStringMapString`
+- [feat] add `GetInt64`
 
 ## v1.2.0
 

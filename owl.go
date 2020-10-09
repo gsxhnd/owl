@@ -196,6 +196,11 @@ func (o *Owl) GetInt(key string) int {
 	return cast.ToInt(o.Get(key))
 }
 
+func GetInt64(key string) int64 { return owl.GetInt64(key) }
+func (o *Owl) GetInt64(key string) int64 {
+	return cast.ToInt64(o.Get(key))
+}
+
 func GetUint(key string) uint { return owl.GetUint(key) }
 func (o *Owl) GetUint(key string) uint {
 	return cast.ToUint(o.Get(key))
@@ -230,12 +235,6 @@ func GetStringMapString(key string) map[string]string { return owl.GetStringMapS
 func (o *Owl) GetStringMapString(key string) map[string]string {
 	return cast.ToStringMapString(o.Get(key))
 }
-
-// TODO
-//func GetTime(key string) time.Time                             { return owl.GetTime(key) }
-//func (o *Owl) GetTime(key string) time.Time                    { return time.Time{} }
-//func GeteDuration(key string) time.Duration                    { return owl.GeteDuration(key) }
-//func (o *Owl) GeteDuration(key string) time.Duration           { return 0 }
 
 func GetAll() map[string]interface{}          { return owl.GetAll() }
 func (o *Owl) GetAll() map[string]interface{} { return o.config }
