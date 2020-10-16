@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4.0
+- [feat] add cmd-tool
+
 ## v1.3.0
 - [feat] add `GetString`
 - [feat] add `GetInt`

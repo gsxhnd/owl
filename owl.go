@@ -127,6 +127,7 @@ func (o *Owl) SetConfName(name string) {
 	o.filename = name
 }
 
+// AddConfPath adds a path for owl to search for the config file in.
 func AddConfPath(path string) { owl.AddConfPath(path) }
 func (o *Owl) AddConfPath(path string) {
 	o.lock.Lock()
@@ -170,6 +171,8 @@ func (o *Owl) findConfigFile() (string, error) {
 	return "", errors.New("file is not exist")
 }
 
+// ReadInConf will read a configuration file, setting existing keys to nil if the
+// key does not exist in the file.
 func ReadInConf(content []byte) error { return owl.ReadInConf(content) }
 func (o *Owl) ReadInConf(content []byte) error {
 	err := yaml.Unmarshal(content, &o.config)
