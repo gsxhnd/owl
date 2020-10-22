@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.1
+- [fix] ignore filepath set or not
+- [fix] `exists` method
+
 ## v1.4.0
 - [feat] add cmd-tool
 

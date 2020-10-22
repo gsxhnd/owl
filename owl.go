@@ -140,9 +140,6 @@ func (o *Owl) ReadConf() error {
 	if o.filename == "" {
 		return errors.WithStack(errors.New("config name not set"))
 	}
-	if o.filepath == nil {
-		return errors.WithStack(errors.New("config path not set"))
-	}
 
 	file, err := o.findConfigFile()
 	if err != nil {
@@ -162,10 +159,21 @@ func (o *Owl) ReadConf() error {
 }
 
 func (o *Owl) findConfigFile() (string, error) {
-	for _, v := range o.filepath {
-		exist, _ := exists(v + o.filename)
-		if exist {
-			return v + o.filename, nil
+	if o.filepath != nil {
+		for _, v := range o.filepath {
+			exist, err := exists(v + o.filename)
+			if exist && err != nil {
+				return v + o.filename, err
+			} else {
+				return "", err
+			}
+		}
+	} else {
+		exist, err := exists(o.filename)
+		if !exist && err != nil {
+			return "", err
+		} else {
+			return o.filename, nil
 		}
 	}
 	return "", errors.New("file is not exist")
