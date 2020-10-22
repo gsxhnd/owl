@@ -176,7 +176,7 @@ func (o *Owl) findConfigFile() (string, error) {
 			return o.filename, nil
 		}
 	}
-	return "", errors.New("file is not exist")
+	return "", errors.New("file not exist")
 }
 
 // ReadInConf will read a configuration file, setting existing keys to nil if the
