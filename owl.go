@@ -135,6 +135,8 @@ func (o *Owl) AddConfPath(path string) {
 	o.filepath = append(o.filepath, path)
 }
 
+// ReadConf will read a configuration file, setting existing keys to nil if the
+// key does not exist in the file.
 func ReadConf() error { return owl.ReadConf() }
 func (o *Owl) ReadConf() error {
 	if o.filename == "" {
