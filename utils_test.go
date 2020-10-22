@@ -14,7 +14,7 @@ func Test_exists(t *testing.T) {
 	}{
 		{"test_exist_file", "./mock/test.yaml", true, false},
 		{"test_not_exist_file", "./test1.yaml", false, true},
-		{"test_dir", "./mock", false, false},
+		{"test_dir", "./mock", false, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

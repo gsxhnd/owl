@@ -164,7 +164,7 @@ func (o *Owl) findConfigFile() (string, error) {
 	if o.filepath != nil {
 		for _, v := range o.filepath {
 			exist, err := exists(v + o.filename)
-			if exist && err != nil {
+			if !exist && err != nil {
 				return "", err
 			} else {
 				return v + o.filename, nil
