@@ -192,6 +192,7 @@ func (o *Owl) ReadInConf(content []byte) error {
 	return nil
 }
 
+// Get returns the value associated with the key as insterface.
 func Get(key string) interface{} { return owl.Get(key) }
 func (o *Owl) Get(key string) interface{} {
 	keys := strings.Split(key, ".")
@@ -204,41 +205,49 @@ func (o *Owl) GetString(key string) string {
 	return cast.ToString(o.Get(key))
 }
 
+// GetInt returns the value associated with the key as int.
 func GetInt(key string) int { return owl.GetInt(key) }
 func (o *Owl) GetInt(key string) int {
 	return cast.ToInt(o.Get(key))
 }
 
+// GetInt64 returns the value associated with the key as int64.
 func GetInt64(key string) int64 { return owl.GetInt64(key) }
 func (o *Owl) GetInt64(key string) int64 {
 	return cast.ToInt64(o.Get(key))
 }
 
+// GetUint returns the value associated with the key as uint.
 func GetUint(key string) uint { return owl.GetUint(key) }
 func (o *Owl) GetUint(key string) uint {
 	return cast.ToUint(o.Get(key))
 }
 
+// GetFloat64 returns the value associated with the key as float64.
 func GetFloat64(key string) float64 { return owl.GetFloat64(key) }
 func (o *Owl) GetFloat64(key string) float64 {
 	return cast.ToFloat64(o.Get(key))
 }
 
+// GetBool returns the value associated with the key as bool.
 func GetBool(key string) bool { return owl.GetBool(key) }
 func (o *Owl) GetBool(key string) bool {
 	return cast.ToBool(o.Get(key))
 }
 
+// GetStringSlice returns the value associated with the key as string slice.
 func GetStringSlice(key string) []string { return owl.GetStringSlice(key) }
 func (o *Owl) GetStringSlice(key string) []string {
 	return cast.ToStringSlice(o.Get(key))
 }
 
+// GetIntSlice returns the value associated with the key as int slice.
 func GetIntSlice(key string) []int { return owl.GetIntSlice(key) }
 func (o *Owl) GetIntSlice(key string) []int {
 	return cast.ToIntSlice(o.Get(key))
 }
 
+// GetStringMap returns the value associated with the key as string map.
 func GetStringMap(key string) map[string]interface{} { return owl.GetStringMap(key) }
 func (o *Owl) GetStringMap(key string) map[string]interface{} {
 	return cast.ToStringMap(o.Get(key))
@@ -249,6 +258,7 @@ func (o *Owl) GetStringMapString(key string) map[string]string {
 	return cast.ToStringMapString(o.Get(key))
 }
 
+// GetAll returns the all value as map.
 func GetAll() map[string]interface{}          { return owl.GetAll() }
 func (o *Owl) GetAll() map[string]interface{} { return o.config }
 
