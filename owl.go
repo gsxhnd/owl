@@ -2,10 +2,10 @@ package owl
 
 import (
 	"context"
-	"github.com/coreos/etcd/clientv3"
-	"github.com/coreos/etcd/mvcc/mvccpb"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
+	"go.etcd.io/etcd/clientv3"
+	"go.etcd.io/etcd/mvcc/mvccpb"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"strings"
