@@ -2,7 +2,7 @@
 ![Test](https://github.com/gsxhnd/owl/workflows/Test/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/gsxhnd/owl/badge.svg)](https://coveralls.io/github/gsxhnd/owl)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gsxhnd/owl)](https://goreportcard.com/report/github.com/gsxhnd/owl)
-![Release](https://github.com/gsxhnd/owl/workflows/Release/badge.svg?tag=latest)
+![Release](https://github.com/gsxhnd/owl/workflows/Release/badge.svg?branch=master)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gsxhnd/owl?label=version)
 
 # owl
