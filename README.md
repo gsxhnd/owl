@@ -21,7 +21,7 @@
 
 # owl
 
-## Install as cli
+## 1. Install as cli
 
 ```shell
 # macos 
@@ -32,10 +32,33 @@ wget https://github.com/gsxhnd/owl/releases/latest/download/owl-linux-amd64 -O o
 wget https://github.com/gsxhnd/owl/releases/latest/download/owl-windows-amd64.exe -O owl.exe
 
 chmod +x /usr/local/bin/owl
-```
 
 ## show version
-
-```shell
 owl version
+```
+
+### 1.1 Cli Usage
+```shell
+NAME:
+   owl - owl
+
+USAGE:
+   owl [global options] command [command options] [arguments...]
+
+COMMANDS:
+   get       get value by key
+   get_keys  get keys by prefix
+   put       read file then put value to etcd
+   version   show version
+   help, h   Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --endpoint value, -e value  (default: "http://127.0.0.1:2379")
+   --help, -h                  show help (default: false)
+```
+
+
+## 2. Add as lib
+```shell
+go get -u github.com/gsxhnd/owl
 ```
