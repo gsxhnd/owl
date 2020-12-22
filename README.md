@@ -15,7 +15,7 @@
 [7]: https://coveralls.io/github/gsxhnd/owl
 [8]: https://goreportcard.com/badge/github.com/gsxhnd/owl
 [9]: https://goreportcard.com/report/github.com/gsxhnd/owl
-[10]: https://github.com/gsxhnd/owl/workflows/Release/badge.svg?branch=master
+[10]: https://github.com/gsxhnd/owl/workflows/Release/badge.svg
 [11]: https://img.shields.io/github/v/release/gsxhnd/owl?label=version
 
 
