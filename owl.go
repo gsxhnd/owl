@@ -8,6 +8,7 @@ import (
 	"go.etcd.io/etcd/mvcc/mvccpb"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -21,6 +22,7 @@ func init() {
 
 var (
 	FileNotExistError = errors.New("file not exist")
+	FileIsDirError    = errors.New("path is dir")
 )
 
 // Owl is a lib for get configure value from etcd.
@@ -166,23 +168,25 @@ func (o *Owl) ReadConf() error {
 
 func (o *Owl) findConfigFile() (string, error) {
 	for _, v := range o.filepath {
-		exist, err := exists(v + o.filename)
-		if !exist {
-			return "", FileNotExistError
-		} else if err != nil {
+		stat, err := os.Stat(v + o.filename)
+		if err != nil {
 			return "", err
-		} else {
+		}
+		if !stat.IsDir() {
 			return v + o.filename, nil
+		} else {
+			return "", FileIsDirError
 		}
 	}
 
-	exist, err := exists(o.filename)
-	if !exist {
-		return "", FileNotExistError
-	} else if err != nil {
+	stat, err := os.Stat(o.filename)
+	if err != nil {
 		return "", err
-	} else {
+	}
+	if !stat.IsDir() {
 		return o.filename, nil
+	} else {
+		return "", FileIsDirError
 	}
 }
 

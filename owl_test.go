@@ -923,6 +923,8 @@ func TestOwl_findConfigFile(t *testing.T) {
 		{"test_path_nil", nil, "test1.yaml", "", true},
 		{"test_err_with_path", []string{"./mock1/"}, "test1.yaml", "", true},
 		{"test_err_without_path", nil, "test1.yaml", "", true},
+		{"test_err_dir_without_path", nil, "mock", "", true},
+		{"test_err_dir_with_path", []string{"./mock"}, "", "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.0
+- [refactor]: merge utils.go
+- [fix]: etcd dep error
+- [fix]: make release ldflags error
+- [doc]: update README.md
+
 ## v1.4.1
 - [fix] ignore filepath set or not
 - [fix] `exists` method
