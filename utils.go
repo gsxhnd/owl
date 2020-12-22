@@ -13,6 +13,6 @@ func exists(path string) (bool, error) {
 	if !stat.IsDir() {
 		return true, nil
 	} else {
-		return false, errors.New("file is not exist")
+		return false, errors.New("path is dir")
 	}
 }

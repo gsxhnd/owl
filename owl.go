@@ -19,6 +19,10 @@ func init() {
 	owl = New()
 }
 
+var (
+	FileNotExistError = errors.New("file not exist")
+)
+
 // Owl is a lib for get configure value from etcd.
 type Owl struct {
 	key      string
@@ -161,24 +165,25 @@ func (o *Owl) ReadConf() error {
 }
 
 func (o *Owl) findConfigFile() (string, error) {
-	if o.filepath != nil {
-		for _, v := range o.filepath {
-			exist, err := exists(v + o.filename)
-			if !exist && err != nil {
-				return "", err
-			} else {
-				return v + o.filename, nil
-			}
-		}
-	} else {
-		exist, err := exists(o.filename)
-		if !exist && err != nil {
+	for _, v := range o.filepath {
+		exist, err := exists(v + o.filename)
+		if !exist {
+			return "", FileNotExistError
+		} else if err != nil {
 			return "", err
 		} else {
-			return o.filename, nil
+			return v + o.filename, nil
 		}
 	}
-	return "", errors.New("file not exist")
+
+	exist, err := exists(o.filename)
+	if !exist {
+		return "", FileNotExistError
+	} else if err != nil {
+		return "", err
+	} else {
+		return o.filename, nil
+	}
 }
 
 // ReadInConf will read a configuration file, setting existing keys to nil if the

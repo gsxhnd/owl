@@ -911,18 +911,20 @@ func TestOwl_GetAll(t *testing.T) {
 func TestOwl_findConfigFile(t *testing.T) {
 	tests := []struct {
 		name     string
-		value    string
+		path     []string
 		filename string
 		want     string
 		wantErr  bool
 	}{
-		{"a", "./mock/", "test.yaml", "./mock/test.yaml", false},
-		{"b", "./mock/", "test1.yaml", "", true},
+		{"test_success", []string{"./mock/"}, "test.yaml", "./mock/test.yaml", false},
+		{"test_fail", []string{"./mock/"}, "test1.yaml", "", true},
+		{"test_path_empty", []string{""}, "test1.yaml", "", true},
+		{"test_path_nil", nil, "test1.yaml", "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			o := New()
-			o.filepath = []string{tt.value}
+			o.filepath = tt.path
 			o.filename = tt.filename
 			file, err := o.findConfigFile()
 			assert.Equal(t, file, tt.want)
