@@ -174,6 +174,7 @@ func TestGetRemote(t *testing.T) {
 		wantErr bool
 	}{
 		{"test_success", "/test", "test", false},
+		{"test_nill", "/test_nil", "", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -194,6 +195,7 @@ func TestOwl_GetRemote(t *testing.T) {
 		wantErr bool
 	}{
 		{"test_success", "/test", "test", false},
+		{"test_nill", "/test_nil", "", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
