@@ -96,6 +96,7 @@ func TestGetRemoteKeys(t *testing.T) {
 		wantErr bool
 	}{
 		{"test", "/test", []string{"/test"}, false},
+		{"test_nil", "/test_empty", nil, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
