@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.1
+- [feat]: add `DeleteRemote` method
+- [feat]: add `DeleteRemote` cmd
+- [test]: add unit test
+
 ## v1.5.0
 - [refactor]: merge utils.go
 - [fix]: etcd dep error
