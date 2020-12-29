@@ -57,9 +57,10 @@ func TestSetRemoteAddr(t *testing.T) {
 			err := SetRemoteAddr(tt.addr)
 			if tt.wantErr {
 				assert.Error(t, err)
-				assert.NotNil(t, owl.client)
+				assert.Nil(t, owl.client)
 			} else {
 				assert.Nil(t, err)
+				assert.NotNil(t, owl.client)
 			}
 		})
 	}
