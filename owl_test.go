@@ -792,7 +792,9 @@ func TestOwl_find(t *testing.T) {
 		path   []string
 		want   interface{}
 	}{
-		{"a", map[string]interface{}{"1": 1}, nil, map[string]interface{}{"1": 1}},
+		{"success", map[string]interface{}{"1": 1}, nil, map[string]interface{}{"1": 1}},
+		{"success", map[string]interface{}{"1": map[interface{}]interface{}{1: "1"}}, []string{"1", "1"}, "1"},
+		{"test_nil", map[string]interface{}{"1": map[int]interface{}{1: "1"}}, []string{"1", "1"}, nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
