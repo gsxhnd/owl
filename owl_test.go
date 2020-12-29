@@ -187,25 +187,45 @@ func TestGetRemote(t *testing.T) {
 		})
 	}
 }
-func TestOwl_GetRemote(t *testing.T) {
+
+//func TestOwl_GetRemote(t *testing.T) {
+//	tests := []struct {
+//		name    string
+//		key     string
+//		want    string
+//		wantErr bool
+//	}{
+//		{"test_success", "/test", "test", false},
+//		{"test_nill", "/test_nil", "", false},
+//	}
+//	for _, tt := range tests {
+//		t.Run(tt.name, func(t *testing.T) {
+//			o := New()
+//			_ = o.SetRemoteAddr([]string{"localhost:2379"})
+//			v, err := o.GetRemote(tt.key)
+//			if tt.wantErr {
+//				assert.Error(t, err)
+//			} else {
+//				assert.Equal(t, tt.want, v)
+//			}
+//		})
+//	}
+//}
+
+func TestDeleteRemote(t *testing.T) {
 	tests := []struct {
 		name    string
 		key     string
 		want    string
 		wantErr bool
 	}{
-		{"test_success", "/test", "test", false},
-		{"test_nill", "/test_nil", "", false},
+		{"test_success", "/test", "", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			o := New()
-			_ = o.SetRemoteAddr([]string{"localhost:2379"})
-			v, err := o.GetRemote(tt.key)
+			err := DeleteRemote(tt.key)
 			if tt.wantErr {
 				assert.Error(t, err)
-			} else {
-				assert.Equal(t, tt.want, v)
 			}
 		})
 	}

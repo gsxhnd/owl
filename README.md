@@ -49,6 +49,7 @@ COMMANDS:
    get       get value by key
    get_keys  get keys by prefix
    put       read file then put value to etcd
+   delete    delete value by key
    version   show version
    help, h   Shows a list of commands or help for one command
 
