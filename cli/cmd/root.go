@@ -27,6 +27,7 @@ func init() {
 		getCmd,
 		getKeysCmd,
 		putCmd,
+		deleteCmd,
 		versionCmd,
 	}
 }

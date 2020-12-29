@@ -84,7 +84,8 @@ func (o *Owl) GetRemoteKeys(prefix string) ([]string, error) {
 // GetRemote get config content from etcd by key
 func GetRemote(key string) (string, error) { return owl.GetRemote(key) }
 func (o *Owl) GetRemote(key string) (string, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	resp, err := o.client.Get(ctx, key)
 	if err != nil {
 		return "", err
@@ -101,8 +102,21 @@ func (o *Owl) GetRemote(key string) (string, error) {
 // PutRemote value into etcd.
 func PutRemote(key, value string) error { return owl.PutRemote(key, value) }
 func (o *Owl) PutRemote(key, value string) error {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	_, err := o.client.Put(ctx, key, value)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteRemote value from etcd.
+func DeleteRemote(key string) error { return owl.DeleteRemote(key) }
+func (o *Owl) DeleteRemote(key string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	_, err := o.client.Delete(ctx, key)
 	if err != nil {
 		return err
 	}
