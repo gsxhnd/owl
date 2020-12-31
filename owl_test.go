@@ -160,13 +160,14 @@ func TestWatcher(t *testing.T) {
 		var s string
 		go Watcher("/test_watch", c)
 
-		go func() {
-			select {
-			case s = <-c:
-				assert.Equal(t, "test_watch", s)
-			}
-		}()
 		_ = PutRemote("/test_watch", "test_watch")
+
+		select {
+		case s = <-c:
+			assert.Equal(t, "test_watch", s)
+			close(c)
+		}
+
 	})
 
 	t.Run("test_watch_put", func(t *testing.T) {
@@ -175,14 +176,16 @@ func TestWatcher(t *testing.T) {
 		c := make(chan string)
 		var s string
 		go Watcher("/test_watch", c)
+		_ = DeleteRemote("/test_watch")
 
 		go func() {
 			select {
 			case s = <-c:
 				assert.Equal(t, "", s)
+				close(c)
 			}
 		}()
-		_ = DeleteRemote("/test_watch")
+
 	})
 
 }
