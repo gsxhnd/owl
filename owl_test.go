@@ -293,6 +293,7 @@ func TestGetString(t *testing.T) {
 	}{
 		{"name", "name", "test"},
 		{"test01", "test.test01", "test01"},
+		{"test_nil", "test.test03", ""},
 	}
 	resetOwl()
 	SetConfName("test.yaml")
@@ -302,26 +303,7 @@ func TestGetString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetString(tt.key), tt.want)
-		})
-	}
-}
-func TestOwl_GetString(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want string
-	}{
-		{"name", "name", "test"},
-		{"test01", "test.test01", "test01"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			o := New()
-			o.SetConfName("test.yaml")
-			o.AddConfPath("./mock/")
-			err := o.ReadConf()
-			assert.Nil(t, err)
-			assert.Equal(t, o.GetString(tt.key), tt.want)
+			assert.IsType(t, string(""), GetInt64(tt.key))
 		})
 	}
 }
@@ -344,27 +326,7 @@ func TestGetInt(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetInt(tt.key), tt.want)
-		})
-	}
-}
-func TestOwl_GetInt(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want int
-	}{
-		{"test_01", "test_int.test01", 1},
-		{"test_02", "test_int.test02", 2},
-		{"test_03", "test_int.test03", 0},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetInt(tt.key), tt.want)
+			assert.IsType(t, int(0), GetInt64(tt.key))
 		})
 	}
 }
@@ -387,27 +349,7 @@ func TestGetInt64(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetInt64(tt.key), tt.want)
-		})
-	}
-}
-func TestOwl_GetInt64(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want int64
-	}{
-		{"test_01", "test_int.test01", 1},
-		{"test_02", "test_int.test02", 2},
-		{"test_03", "test_int.test03", 0},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetInt64(tt.key), tt.want)
+			assert.IsType(t, int64(0), GetInt64(tt.key))
 		})
 	}
 }

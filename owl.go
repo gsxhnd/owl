@@ -182,7 +182,7 @@ func (o *Owl) findConfigFile() (string, error) {
 	for _, v := range o.filepath {
 		stat, err := os.Stat(v + o.filename)
 		if err != nil {
-			return "", err
+			return "", FileNotExistError
 		}
 		if !stat.IsDir() {
 			return v + o.filename, nil
@@ -193,7 +193,7 @@ func (o *Owl) findConfigFile() (string, error) {
 
 	stat, err := os.Stat(o.filename)
 	if err != nil {
-		return "", err
+		return "", FileNotExistError
 	}
 	if !stat.IsDir() {
 		return o.filename, nil
