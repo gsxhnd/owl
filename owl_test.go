@@ -314,7 +314,7 @@ func TestGetString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetString(tt.key), tt.want)
-			assert.IsType(t, string(""), GetInt64(tt.key))
+			assert.IsType(t, string(""), GetString(tt.key))
 		})
 	}
 }
@@ -337,7 +337,7 @@ func TestGetInt(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetInt(tt.key), tt.want)
-			assert.IsType(t, int(0), GetInt64(tt.key))
+			assert.IsType(t, int(0), GetInt(tt.key))
 		})
 	}
 }
