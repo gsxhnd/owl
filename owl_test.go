@@ -153,30 +153,38 @@ func TestDeleteRemote(t *testing.T) {
 }
 
 func TestWatcher(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want string
-	}{
-		{"test_watch", "/t1", "t1"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			resetOwl()
-			_ = SetRemoteAddr([]string{"localhost:2379"})
-			c := make(chan string)
-			var s string
-			go Watcher(tt.key, c)
+	t.Run("test_watch_put", func(t *testing.T) {
+		resetOwl()
+		_ = SetRemoteAddr([]string{"localhost:2379"})
+		c := make(chan string)
+		var s string
+		go Watcher("/test_watch", c)
 
-			go func() {
-				select {
-				case s = <-c:
-					assert.Equal(t, tt.want, s)
-				}
-			}()
-			_ = PutRemote(tt.key, tt.want)
-		})
-	}
+		go func() {
+			select {
+			case s = <-c:
+				assert.Equal(t, "test_watch", s)
+			}
+		}()
+		_ = PutRemote("/test_watch", "test_watch")
+	})
+
+	t.Run("test_watch_put", func(t *testing.T) {
+		resetOwl()
+		_ = SetRemoteAddr([]string{"localhost:2379"})
+		c := make(chan string)
+		var s string
+		go Watcher("/test_watch", c)
+
+		go func() {
+			select {
+			case s = <-c:
+				assert.Equal(t, "", s)
+			}
+		}()
+		_ = DeleteRemote("/test_watch")
+	})
+
 }
 
 func TestAddConfPath(t *testing.T) {

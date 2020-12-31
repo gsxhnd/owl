@@ -54,7 +54,8 @@ func (o *Owl) SetRemoteAddr(addr []string) error {
 		return err
 	}
 
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	_, err = client.Status(ctx, addr[0])
 	if err != nil {
 		return err
@@ -66,7 +67,8 @@ func (o *Owl) SetRemoteAddr(addr []string) error {
 // GetRemoteKeys get keys from etcd by prefix
 func GetRemoteKeys(prefix string) ([]string, error) { return owl.GetRemoteKeys(prefix) }
 func (o *Owl) GetRemoteKeys(prefix string) ([]string, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	resp, err := o.client.Get(ctx, prefix, clientv3.WithPrefix())
 	if err != nil {
 		return nil, err
@@ -134,7 +136,6 @@ func (o *Owl) Watcher(key string, c chan string) {
 				c <- string(ev.Kv.Value)
 			case mvccpb.DELETE:
 				c <- ""
-			default:
 			}
 		}
 	}
