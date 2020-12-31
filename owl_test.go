@@ -3,6 +3,7 @@ package owl
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 var exampleYaml = `
@@ -167,10 +168,11 @@ func TestWatcher(t *testing.T) {
 				close(done)
 			}
 		}()
+		time.AfterFunc(5*time.Second, func() {
+			_ = PutRemote("/test_watch", "test_watch")
+		})
 
-		_ = PutRemote("/test_watch", "test_watch")
 		<-done
-
 	})
 
 	t.Run("test_watch_put", func(t *testing.T) {
@@ -184,11 +186,13 @@ func TestWatcher(t *testing.T) {
 			select {
 			case s := <-c:
 				assert.Equal(t, "", s)
-				close(c)
+				close(done)
 			}
 		}()
 
-		_ = DeleteRemote("/test_watch")
+		time.AfterFunc(5*time.Second, func() {
+			_ = DeleteRemote("/test_watch")
+		})
 		<-done
 	})
 
