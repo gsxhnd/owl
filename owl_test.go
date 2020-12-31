@@ -217,7 +217,7 @@ func TestReadConf(t *testing.T) {
 		{"test_file_err", "./mock/", "test1.yaml", true},
 		{"test_file_err", "./mock/", "", true},
 		{"test_path_err", "", "test1.yaml", true},
-		{"test_read_content_err", "./mock", "test_err.yaml", true},
+		{"test_read_content_err", "./mock/", "test_err.yaml", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
