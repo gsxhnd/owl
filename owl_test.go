@@ -213,10 +213,11 @@ func TestReadConf(t *testing.T) {
 		filename string
 		wantErr  bool
 	}{
-		{"a", "./mock/", "test.yaml", false},
-		{"b", "./mock/", "test1.yaml", true},
-		{"c", "./mock/", "", true},
-		{"d", "", "test1.yaml", true},
+		{"test_success", "./mock/", "test.yaml", false},
+		{"test_file_err", "./mock/", "test1.yaml", true},
+		{"test_file_err", "./mock/", "", true},
+		{"test_path_err", "", "test1.yaml", true},
+		{"test_read_content_err", "./mock", "test_err.yaml", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -272,26 +273,6 @@ func TestGet(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, Get(tt.args), tt.want)
-		})
-	}
-}
-func TestOwl_Get(t *testing.T) {
-	tests := []struct {
-		name string
-		args string
-		want interface{}
-	}{
-		{name: "name", args: "name", want: "test"},
-		{name: "test01", args: "test.test01", want: "test01"},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.Get(tt.args), tt.want)
 		})
 	}
 }

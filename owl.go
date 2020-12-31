@@ -168,10 +168,7 @@ func (o *Owl) ReadConf() error {
 		return err
 	}
 
-	content, err := ioutil.ReadFile(file)
-	if err != nil {
-		return err
-	}
+	content, _ := ioutil.ReadFile(file)
 
 	err = yaml.Unmarshal(content, &o.config)
 	if err != nil {
