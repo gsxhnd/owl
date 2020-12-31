@@ -157,19 +157,19 @@ func TestWatcher(t *testing.T) {
 		resetOwl()
 		_ = SetRemoteAddr([]string{"localhost:2379"})
 		c := make(chan string)
-		var s string
+		done := make(chan struct{})
 		go Watcher("/test_watch", c)
 
 		go func() {
 			select {
-			case s = <-c:
+			case s := <-c:
 				assert.Equal(t, "test_watch", s)
-				close(c)
+				close(done)
 			}
 		}()
 
 		_ = PutRemote("/test_watch", "test_watch")
-		<-c
+		<-done
 
 	})
 
@@ -177,19 +177,19 @@ func TestWatcher(t *testing.T) {
 		resetOwl()
 		_ = SetRemoteAddr([]string{"localhost:2379"})
 		c := make(chan string)
-		var s string
+		done := make(chan struct{})
 		go Watcher("/test_watch", c)
 
 		go func() {
 			select {
-			case s = <-c:
+			case s := <-c:
 				assert.Equal(t, "", s)
 				close(c)
 			}
 		}()
 
 		_ = DeleteRemote("/test_watch")
-		<-c
+		<-done
 	})
 
 }
