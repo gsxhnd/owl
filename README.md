@@ -35,9 +35,17 @@ chmod +x /usr/local/bin/owl
 
 ## show version
 owl version
+
+owl version:  1.5.1
+owl commit:  6840df54b9a566acb78b36195fd9e826bb04d6cf
+owl tree state:  clean
+owl build date:  2020-12-29T15:49:14+0800
+go version:  go1.15.6
+go compiler:  gc
+platform:  darwin/amd64
 ```
 
-### 1.1 Cli Usage
+### 1.1 CLI Usage
 ```shell
 NAME:
    owl - owl
@@ -63,3 +71,36 @@ GLOBAL OPTIONS:
 ```shell
 go get -u github.com/gsxhnd/owl
 ```
+
+### Putting Values into owl
+
+#### Reading Config Files
+
+Owl requires minimal configuration so it knows where to look for config files. Owl just supports YAML file.
+
+Examples:
+
+```
+owl.SetConfName("test.yaml")
+owl.AddConfPath("./mock/")
+err := owl.ReadConf()
+if err != nil { // Handle errors reading the config file
+	panic(fmt.Errorf("Fatal error config file: %s \n", err))
+}
+```
+
+### Getting Values From
+
+In owl, there are a few ways to get a value depending on the value’s type. The following functions and methods exist:
+
+ * `Get(key string) : interface{}`
+ * `GetBool(key string) : bool`
+ * `GetFloat64(key string) : float64`
+ * `GetInt(key string) : int`
+ * `GetIntSlice(key string) : []int`
+ * `GetString(key string) : string`
+ * `GetStringMap(key string) : map[string]interface{}`
+ * `GetStringMapString(key string) : map[string]string`
+ * `GetStringSlice(key string) : []string`
+ * `GetAll() : map[string]interface{}`
+
