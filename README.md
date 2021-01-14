@@ -17,9 +17,13 @@
 [9]: https://goreportcard.com/report/github.com/gsxhnd/owl
 [10]: https://github.com/gsxhnd/owl/workflows/Release/badge.svg
 [11]: https://img.shields.io/github/v/release/gsxhnd/owl?label=version
-
+[12]: https://github.com/spf13/viper
 
 # owl
+
+Go yaml configuration lib,can get config value from yaml file or etcd cluster like [viper][12] lib.
+
+Owl also support binary cli, can help you store yaml file's content into etch cluster.
 
 ## 1. Install as cli
 
