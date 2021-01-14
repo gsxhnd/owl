@@ -23,7 +23,7 @@
 
 Go yaml configuration lib,can get config value from yaml file or etcd cluster like [viper][12] lib.
 
-Owl also support binary cli, can help you store yaml file's content into etch cluster.
+Owl also support binary cli, help you store yaml file's content into etcd cluster.
 
 ## 1. Install as cli
 
