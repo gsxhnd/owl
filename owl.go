@@ -23,6 +23,7 @@ func init() {
 var (
 	FileNotExistError = errors.New("file not exist")
 	FileIsDirError    = errors.New("path is dir")
+	FilenameError     = errors.New("filename is not set")
 )
 
 // Owl is a lib for get configure value from etcd.
@@ -161,7 +162,7 @@ func (o *Owl) AddConfPath(path string) {
 func ReadConf() error { return owl.ReadConf() }
 func (o *Owl) ReadConf() error {
 	if o.filename == "" {
-		return errors.WithStack(errors.New("config name not set"))
+		return FilenameError
 	}
 
 	file, err := o.findConfigFile()
