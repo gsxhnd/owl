@@ -160,18 +160,24 @@ func TestWatcher(t *testing.T) {
 		c := make(chan string)
 		done := make(chan struct{})
 		go Watcher("/test_watch", c)
-		count := 0
+		var (
+			count   = 0
+			value00 = ""
+			value01 = ""
+			value02 = "v3"
+		)
+
 		go func() {
 			select {
 			case s := <-c:
 				switch count {
 				case 0:
-					assert.Equal(t, "test_watch", s)
+					value00 = s
+
 				case 1:
-					assert.Equal(t, "test_watch_1", s)
+					value01 = s
 				case 2:
-					assert.Equal(t, "", s)
-					close(done)
+					value02 = s
 				default:
 					close(done)
 				}
@@ -179,19 +185,28 @@ func TestWatcher(t *testing.T) {
 		}()
 		go func() {
 			time.AfterFunc(5*time.Second, func() {
-				_ = PutRemote("/test_watch", "test_watch")
+				count = 0
+				_ = PutRemote("/test_watch", "test_watch_00")
 			})
 		}()
 		go func() {
 			time.AfterFunc(10*time.Second, func() {
 				count = 1
-				_ = PutRemote("/test_watch", "test_watch_1")
+				_ = PutRemote("/test_watch", "test_watch_01")
 			})
 		}()
 		go func() {
 			time.AfterFunc(15*time.Second, func() {
 				count = 2
 				_ = DeleteRemote("/test_watch")
+			})
+		}()
+
+		go func() {
+			time.AfterFunc(20*time.Second, func() {
+				assert.Equal(t, "test_watch", value00)
+				assert.Equal(t, "test_watch", value01)
+				assert.Equal(t, "test_watch", value02)
 			})
 		}()
 
