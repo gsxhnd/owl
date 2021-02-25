@@ -207,6 +207,7 @@ func TestWatcher(t *testing.T) {
 				assert.Equal(t, "test_watch", value00)
 				assert.Equal(t, "test_watch", value01)
 				assert.Equal(t, "test_watch", value02)
+				close(done)
 			})
 		}()
 
