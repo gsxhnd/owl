@@ -168,41 +168,43 @@ func TestWatcher(t *testing.T) {
 		)
 
 		go func() {
-			select {
-			case s := <-c:
-				switch count {
-				case 0:
-					value00 = s
-				case 1:
-					value01 = s
-				case 2:
-					value02 = s
-				default:
-					close(done)
+			for {
+				select {
+				case s := <-c:
+					switch count {
+					case 0:
+						value00 = s
+					case 1:
+						value01 = s
+					case 2:
+						value02 = s
+					default:
+						close(done)
+					}
 				}
 			}
 		}()
 		go func() {
-			time.AfterFunc(5*time.Second, func() {
+			time.AfterFunc(2*time.Second, func() {
 				count = 0
 				_ = PutRemote("/test_watch", "test_watch_00")
 			})
 		}()
 		go func() {
-			time.AfterFunc(10*time.Second, func() {
+			time.AfterFunc(4*time.Second, func() {
 				count = 1
 				_ = PutRemote("/test_watch", "test_watch_01")
 			})
 		}()
 		go func() {
-			time.AfterFunc(15*time.Second, func() {
+			time.AfterFunc(8*time.Second, func() {
 				count = 2
 				_ = DeleteRemote("/test_watch")
 			})
 		}()
 
 		go func() {
-			time.AfterFunc(20*time.Second, func() {
+			time.AfterFunc(10*time.Second, func() {
 				assert.Equal(t, "test_watch_00", value00)
 				assert.Equal(t, "test_watch_01", value01)
 				assert.Equal(t, "", value02)
