@@ -168,8 +168,10 @@ func TestWatcher(t *testing.T) {
 				switch count {
 				case 0:
 					assert.Equal(t, "test_watch", s)
+					count++
 				case 1:
 					assert.Equal(t, "test_watch_1", s)
+					count++
 				case 2:
 					assert.Equal(t, "", s)
 					close(done)
@@ -182,12 +184,10 @@ func TestWatcher(t *testing.T) {
 			_ = PutRemote("/test_watch", "test_watch")
 		})
 		time.AfterFunc(10*time.Second, func() {
-			count++
 			_ = PutRemote("/test_watch", "test_watch_1")
 
 		})
 		time.AfterFunc(15*time.Second, func() {
-			count++
 			t.Log("count: ", count)
 			_ = DeleteRemote("/test_watch")
 		})
