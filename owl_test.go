@@ -162,9 +162,9 @@ func TestWatcher(t *testing.T) {
 		go Watcher("/test_watch", c)
 
 		go func() {
+			count := 0
 			select {
 			case s := <-c:
-				count := 0
 				switch count {
 				case 0:
 					assert.Equal(t, "test_watch", s)
