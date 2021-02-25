@@ -170,6 +170,9 @@ func TestWatcher(t *testing.T) {
 					assert.Equal(t, "test_watch", s)
 				case 1:
 					assert.Equal(t, "test_watch_1", s)
+				case 2:
+					assert.Equal(t, "", s)
+					close(done)
 				default:
 					close(done)
 				}
@@ -185,32 +188,11 @@ func TestWatcher(t *testing.T) {
 		})
 		time.AfterFunc(5*time.Second, func() {
 			count++
-			_ = PutRemote("/test_watch", "test_watch_1")
-		})
-		<-done
-	})
-
-	t.Run("test_watch_put", func(t *testing.T) {
-		resetOwl()
-		_ = SetRemoteAddr([]string{"localhost:2379"})
-		c := make(chan string)
-		done := make(chan struct{})
-		go Watcher("/test_watch", c)
-
-		go func() {
-			select {
-			case s := <-c:
-				assert.Equal(t, "", s)
-				close(done)
-			}
-		}()
-
-		time.AfterFunc(5*time.Second, func() {
 			_ = DeleteRemote("/test_watch")
 		})
+
 		<-done
 	})
-
 }
 
 func TestAddConfPath(t *testing.T) {
