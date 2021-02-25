@@ -173,7 +173,6 @@ func TestWatcher(t *testing.T) {
 				switch count {
 				case 0:
 					value00 = s
-
 				case 1:
 					value01 = s
 				case 2:
