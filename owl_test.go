@@ -181,12 +181,12 @@ func TestWatcher(t *testing.T) {
 		time.AfterFunc(5*time.Second, func() {
 			_ = PutRemote("/test_watch", "test_watch")
 		})
-		time.AfterFunc(5*time.Second, func() {
+		time.AfterFunc(10*time.Second, func() {
 			count++
 			_ = PutRemote("/test_watch", "test_watch_1")
 
 		})
-		time.AfterFunc(5*time.Second, func() {
+		time.AfterFunc(15*time.Second, func() {
 			count++
 			t.Log("count: ", count)
 			_ = DeleteRemote("/test_watch")
