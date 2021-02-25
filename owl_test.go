@@ -159,19 +159,34 @@ func TestWatcher(t *testing.T) {
 		_ = SetRemoteAddr([]string{"localhost:2379"})
 		c := make(chan string)
 		done := make(chan struct{})
+		count := 0
 		go Watcher("/test_watch", c)
 
 		go func() {
 			select {
 			case s := <-c:
-				assert.Equal(t, "test_watch", s)
-				close(done)
+				switch count {
+				case 0:
+					assert.Equal(t, "test_watch", s)
+				case 1:
+					assert.Equal(t, "test_watch_1", s)
+				default:
+					close(done)
+				}
 			}
 		}()
 		time.AfterFunc(5*time.Second, func() {
 			_ = PutRemote("/test_watch", "test_watch")
 		})
+		time.AfterFunc(5*time.Second, func() {
+			count++
+			_ = PutRemote("/test_watch", "test_watch_1")
 
+		})
+		time.AfterFunc(5*time.Second, func() {
+			count++
+			_ = PutRemote("/test_watch", "test_watch_1")
+		})
 		<-done
 	})
 
