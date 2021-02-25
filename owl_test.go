@@ -154,7 +154,7 @@ func TestDeleteRemote(t *testing.T) {
 }
 
 func TestWatcher(t *testing.T) {
-	t.Run("test_watch_put", func(t *testing.T) {
+	t.Run("test_watch", func(t *testing.T) {
 		resetOwl()
 		_ = SetRemoteAddr([]string{"localhost:2379"})
 		c := make(chan string)
@@ -188,6 +188,7 @@ func TestWatcher(t *testing.T) {
 		})
 		time.AfterFunc(5*time.Second, func() {
 			count++
+			t.Log("count: ", count)
 			_ = DeleteRemote("/test_watch")
 		})
 
