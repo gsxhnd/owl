@@ -204,9 +204,9 @@ func TestWatcher(t *testing.T) {
 
 		go func() {
 			time.AfterFunc(20*time.Second, func() {
-				assert.Equal(t, "test_watch", value00)
-				assert.Equal(t, "test_watch", value01)
-				assert.Equal(t, "test_watch", value02)
+				assert.Equal(t, "test_watch_00", value00)
+				assert.Equal(t, "test_watch_01", value01)
+				assert.Equal(t, "", value02)
 				close(done)
 			})
 		}()
