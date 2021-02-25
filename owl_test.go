@@ -386,27 +386,6 @@ func TestGetUInt(t *testing.T) {
 		})
 	}
 }
-func TestOwl_GetUInt(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want uint
-	}{
-		{"test_01", "test_int.test01", 1},
-		{"test_02", "test_int.test02", 2},
-		{"test_03", "test_int.test03", 0},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetUint(tt.key), tt.want)
-		})
-	}
-}
 
 func TestGetFloat64(t *testing.T) {
 	tests := []struct {
@@ -426,27 +405,6 @@ func TestGetFloat64(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetFloat64(tt.key), tt.want)
-		})
-	}
-}
-func TestOwl_GetFloat64(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want float64
-	}{
-		{"test_01", "test_int.test01", 1},
-		{"test_02", "test_int.test02", 2},
-		{"test_03", "test_int.test03", 0},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetFloat64(tt.key), tt.want)
 		})
 	}
 }
@@ -471,26 +429,6 @@ func TestGetBool(t *testing.T) {
 		})
 	}
 }
-func TestOwl_GetBool(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want bool
-	}{
-		{"test_01", "test_bool.test01", true},
-		{"test_02", "test_bool.test02", false},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetBool(tt.key), tt.want)
-		})
-	}
-}
 
 func TestGetStringSlice(t *testing.T) {
 	tests := []struct {
@@ -508,25 +446,6 @@ func TestGetStringSlice(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, GetStringSlice(tt.key), tt.want)
-		})
-	}
-}
-func TestOwl_GetStringSlice(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want []string
-	}{
-		{"test_01", "test_string_slice.test01", []string{"test1", "test2"}},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, o.GetStringSlice(tt.key), tt.want)
 		})
 	}
 }
@@ -550,25 +469,6 @@ func TestGetIntSlice(t *testing.T) {
 		})
 	}
 }
-func TestOwl_GetIntSlice(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want []int
-	}{
-		{"test_01", "test_int_slice.test01", []int{1, 2}},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, o.GetIntSlice(tt.key))
-		})
-	}
-}
 
 func TestGetStringMap(t *testing.T) {
 	tests := []struct {
@@ -586,25 +486,6 @@ func TestGetStringMap(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, tt.want, GetStringMap(tt.key))
-		})
-	}
-}
-func TestOwl_GetStringMap(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want map[string]interface{}
-	}{
-		{"test_01", "test_string_map", map[string]interface{}{"test01": "test01", "test02": "test02"}},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, o.GetStringMap(tt.key))
 		})
 	}
 }
@@ -628,25 +509,6 @@ func TestGetStringMapString(t *testing.T) {
 		})
 	}
 }
-func TestOwl_GetStringMapString(t *testing.T) {
-	tests := []struct {
-		name string
-		key  string
-		want map[string]string
-	}{
-		{"test_01", "test_string_map", map[string]string{"test01": "test01", "test02": "test02"}},
-	}
-	o := New()
-	o.SetConfName("test.yaml")
-	o.AddConfPath("./mock/")
-	err := o.ReadConf()
-	assert.Nil(t, err)
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, o.GetStringMapString(tt.key))
-		})
-	}
-}
 
 func TestGetAll(t *testing.T) {
 	tests := []struct {
@@ -666,28 +528,6 @@ func TestGetAll(t *testing.T) {
 				assert.Nil(t, GetAll())
 			} else {
 				assert.NotNil(t, GetAll())
-			}
-		})
-	}
-}
-func TestOwl_GetAll(t *testing.T) {
-	tests := []struct {
-		name    string
-		content []byte
-		wantNil bool
-	}{
-		{"1", exampleByteYaml, false},
-		{"2", emptyByteYaml, true},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			o := New()
-			err := o.ReadInConf(tt.content)
-			assert.Nil(t, err)
-			if tt.wantNil {
-				assert.Nil(t, o.GetAll())
-			} else {
-				assert.NotNil(t, o.GetAll())
 			}
 		})
 	}
