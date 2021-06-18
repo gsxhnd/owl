@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
-	"go.etcd.io/etcd/clientv3"
-	"go.etcd.io/etcd/mvcc/mvccpb"
+	"go.etcd.io/etcd/api/v3/mvccpb"
+	"go.etcd.io/etcd/client/v3"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
@@ -214,7 +214,7 @@ func (o *Owl) ReadInConf(content []byte) error {
 	return nil
 }
 
-// Get returns the value associated with the key as insterface.
+// Get returns the value associated with the key as interface.
 func Get(key string) interface{} { return owl.Get(key) }
 func (o *Owl) Get(key string) interface{} {
 	keys := strings.Split(key, ".")
