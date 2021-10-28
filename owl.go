@@ -2,6 +2,7 @@ package owl
 
 import (
 	"context"
+	"fmt"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 	"go.etcd.io/etcd/api/v3/mvccpb"
@@ -147,6 +148,7 @@ func (o *Owl) SetConfName(name string) {
 	o.lock.Lock()
 	defer o.lock.Unlock()
 	o.filename = name
+	fmt.Println(o.filename)
 }
 
 // AddConfPath adds a path for owl to search for the config file in.
@@ -155,6 +157,18 @@ func (o *Owl) AddConfPath(path string) {
 	o.lock.Lock()
 	defer o.lock.Unlock()
 	o.filepath = append(o.filepath, path)
+}
+
+func GetConfPath() []string { return owl.GetConfPath() }
+func (o *Owl) GetConfPath() []string {
+	var paths []string
+	if len(o.filepath) == 0 {
+		paths = append(paths, o.filename)
+	}
+	for _, v := range o.filepath {
+		paths = append(paths, v+o.filename)
+	}
+	return paths
 }
 
 // ReadConf will read a configuration file, setting existing keys to nil if the
