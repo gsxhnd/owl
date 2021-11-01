@@ -159,14 +159,20 @@ func (o *Owl) AddConfPath(path string) {
 	o.filepath = append(o.filepath, path)
 }
 
-func GetConfPath() []string { return owl.GetConfPath() }
+// GetConfPaths returns a list of configure paths for owl.
+func GetConfPaths() []string { return owl.GetConfPath() }
 func (o *Owl) GetConfPath() []string {
 	var paths []string
 	if len(o.filepath) == 0 {
-		paths = append(paths, o.filename)
-	}
-	for _, v := range o.filepath {
-		paths = append(paths, v+o.filename)
+		if o.filename == "" {
+			return nil
+		} else {
+			paths = append(paths, o.filename)
+		}
+	} else {
+		for _, v := range o.filepath {
+			paths = append(paths, v+o.filename)
+		}
 	}
 	return paths
 }
