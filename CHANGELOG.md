@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.0
+- [feat]: add `GetConfPaths` method
+
 ## v1.5.1
 - [feat]: add `DeleteRemote` method
 - [feat]: add `DeleteRemote` cmd
