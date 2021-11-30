@@ -1,9 +1,10 @@
 package owl
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var exampleYaml = `

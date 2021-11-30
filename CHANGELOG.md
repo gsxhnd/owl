@@ -1,27 +1,33 @@
 # Changelog
 
 ## v1.6.0
+
 - [feat]: add `GetConfPaths` method
 
 ## v1.5.1
+
 - [feat]: add `DeleteRemote` method
 - [feat]: add `DeleteRemote` cmd
 - [test]: add unit test
 
 ## v1.5.0
+
 - [refactor]: merge utils.go
 - [fix]: etcd dep error
 - [fix]: make release ldflags error
 - [doc]: update README.md
 
 ## v1.4.1
+
 - [fix] ignore filepath set or not
 - [fix] `exists` method
 
 ## v1.4.0
+
 - [feat] add cmd-tool
 
 ## v1.3.0
+
 - [feat] add `GetString`
 - [feat] add `GetInt`
 - [feat] add `GetFloat64`
@@ -48,4 +54,3 @@
 ## v1.1.0
 
 - [feat] add get keys
-

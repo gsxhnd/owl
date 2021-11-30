@@ -3,16 +3,17 @@ package owl
 import (
 	"context"
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/spf13/cast"
-	"go.etcd.io/etcd/api/v3/mvccpb"
-	"go.etcd.io/etcd/client/v3"
-	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/pkg/errors"
+	"github.com/spf13/cast"
+	"go.etcd.io/etcd/api/v3/mvccpb"
+	clientv3 "go.etcd.io/etcd/client/v3"
+	yaml "gopkg.in/yaml.v3"
 )
 
 var owl *Owl
