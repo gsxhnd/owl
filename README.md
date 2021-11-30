@@ -28,7 +28,7 @@ Owl also support binary cli, help you store yaml file's content into etcd cluste
 ## 1. Install as cli
 
 ```shell
-# macos 
+# macos
 wget https://github.com/gsxhnd/owl/releases/latest/download/owl-darwin-amd64 -O owl
 # linux x64
 wget https://github.com/gsxhnd/owl/releases/latest/download/owl-linux-amd64 -O owl
@@ -50,6 +50,7 @@ platform:  darwin/amd64
 ```
 
 ### 1.1 CLI Usage
+
 ```shell
 NAME:
    owl - owl
@@ -70,8 +71,8 @@ GLOBAL OPTIONS:
    --help, -h                  show help (default: false)
 ```
 
-
 ## 2. Add as lib
+
 ```shell
 go get -u github.com/gsxhnd/owl
 ```
@@ -97,20 +98,13 @@ if err != nil { // Handle errors reading the config file
 
 In owl, there are a few ways to get a value depending on the value’s type. The following functions and methods exist:
 
- * `Get(key string) : interface{}`
- * `GetBool(key string) : bool`
- * `GetFloat64(key string) : float64`
- * `GetInt(key string) : int`
- * `GetIntSlice(key string) : []int`
- * `GetString(key string) : string`
- * `GetStringMap(key string) : map[string]interface{}`
- * `GetStringMapString(key string) : map[string]string`
- * `GetStringSlice(key string) : []string`
- * `GetAll() : map[string]interface{}`
-
-
-## JetBrains OS licenses
-
-`Owl` had been being developed with GoLand under the **free JetBrains Open Source license(s)** granted by JetBrains s.r.o., hence I would like to express my thanks here.
-
-<a href="https://www.jetbrains.com/?from=LastOrder" target="_blank"><img src="https://github.com/gsxhnd/resources/blob/master/jetbrains-variant-4.png?raw=true" width="250" align="middle"/></a>
+- `Get(key string) : interface{}`
+- `GetBool(key string) : bool`
+- `GetFloat64(key string) : float64`
+- `GetInt(key string) : int`
+- `GetIntSlice(key string) : []int`
+- `GetString(key string) : string`
+- `GetStringMap(key string) : map[string]interface{}`
+- `GetStringMapString(key string) : map[string]string`
+- `GetStringSlice(key string) : []string`
+- `GetAll() : map[string]interface{}`
