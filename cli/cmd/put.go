@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/heart-dance-x/owl"
+	"github.com/gsxhnd/owl"
 	"github.com/urfave/cli/v2"
 )
 

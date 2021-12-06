@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/heart-dance-x/owl/cli/cmd"
+	"github.com/gsxhnd/owl/cli/cmd"
 )
 
 func main() {
