@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/gsxhnd/owl"
-	"github.com/urfave/cli/v2"
 	"log"
+
+	"github.com/heart-dance-x/owl"
+	"github.com/urfave/cli/v2"
 )
 
 var getCmd = &cli.Command{

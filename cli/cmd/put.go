@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"github.com/gsxhnd/owl"
-	"github.com/urfave/cli/v2"
 	"io/ioutil"
 	"log"
+
+	"github.com/heart-dance-x/owl"
+	"github.com/urfave/cli/v2"
 )
 
 var putCmd = &cli.Command{
@@ -17,6 +18,9 @@ var putCmd = &cli.Command{
 		var filePath = c.Args().Get(1)
 		_ = owl.SetRemoteAddr([]string{endPoint})
 		yamlFile, err := ioutil.ReadFile(filePath)
+		if err != nil {
+			log.Panic(err)
+		}
 
 		err = owl.PutRemote(key, string(yamlFile))
 		if err != nil {

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/gsxhnd/owl/cli/cmd"
 	"os"
+
+	"github.com/heart-dance-x/owl/cli/cmd"
 )
 
 func main() {

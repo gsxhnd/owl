@@ -6,16 +6,16 @@
 ![Release][10]
 ![GitHub release (latest by date)][11]
 
-[1]: https://godoc.org/github.com/gsxhnd/owl?status.svg
-[2]: https://pkg.go.dev/github.com/gsxhnd/owl
+[1]: https://godoc.org/github.com/heart-dance-x/owl?status.svg
+[2]: https://pkg.go.dev/github.com/heart-dance-x/owl
 [3]: https://img.shields.io/github/license/gsxhnd/owl
 [4]: https://opensource.org/licenses/MIT
-[5]: https://github.com/gsxhnd/owl/workflows/Test/badge.svg
+[5]: https://github.com/heart-dance-x/owl/workflows/Test/badge.svg
 [6]: https://coveralls.io/repos/github/gsxhnd/owl/badge.svg
 [7]: https://coveralls.io/github/gsxhnd/owl
-[8]: https://goreportcard.com/badge/github.com/gsxhnd/owl
-[9]: https://goreportcard.com/report/github.com/gsxhnd/owl
-[10]: https://github.com/gsxhnd/owl/workflows/Release/badge.svg
+[8]: https://goreportcard.com/badge/github.com/heart-dance-x/owl
+[9]: https://goreportcard.com/report/github.com/heart-dance-x/owl
+[10]: https://github.com/heart-dance-x/owl/workflows/Release/badge.svg
 [11]: https://img.shields.io/github/v/release/gsxhnd/owl?label=version
 [12]: https://github.com/spf13/viper
 
@@ -29,11 +29,11 @@ Owl also support binary cli, help you store yaml file's content into etcd cluste
 
 ```shell
 # macos
-wget https://github.com/gsxhnd/owl/releases/latest/download/owl-darwin-amd64 -O owl
+wget https://github.com/heart-dance-x/owl/releases/latest/download/owl-darwin-amd64 -O owl
 # linux x64
-wget https://github.com/gsxhnd/owl/releases/latest/download/owl-linux-amd64 -O owl
+wget https://github.com/heart-dance-x/owl/releases/latest/download/owl-linux-amd64 -O owl
 # windows x64
-wget https://github.com/gsxhnd/owl/releases/latest/download/owl-windows-amd64.exe -O owl.exe
+wget https://github.com/heart-dance-x/owl/releases/latest/download/owl-windows-amd64.exe -O owl.exe
 
 chmod +x /usr/local/bin/owl
 
@@ -74,7 +74,7 @@ GLOBAL OPTIONS:
 ## 2. Add as lib
 
 ```shell
-go get -u github.com/gsxhnd/owl
+go get -u github.com/heart-dance-x/owl
 ```
 
 ### Putting Values into owl
@@ -85,12 +85,12 @@ Owl requires minimal configuration so it knows where to look for config files. O
 
 Examples:
 
-```
+```go
 owl.SetConfName("test.yaml")
 owl.AddConfPath("./mock/")
 err := owl.ReadConf()
 if err != nil { // Handle errors reading the config file
-	panic(fmt.Errorf("Fatal error config file: %s \n", err))
+  panic(fmt.Errorf("Fatal error config file: %s \n", err))
 }
 ```
 

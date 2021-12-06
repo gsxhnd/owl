@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"github.com/gsxhnd/owl"
-	"github.com/urfave/cli/v2"
 	"log"
+
+	"github.com/heart-dance-x/owl"
+	"github.com/urfave/cli/v2"
 )
 
 var deleteCmd = &cli.Command{

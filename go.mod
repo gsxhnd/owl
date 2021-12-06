@@ -1,4 +1,4 @@
-module github.com/gsxhnd/owl
+module github.com/heart-dance-x/owl
 
 go 1.15
 
