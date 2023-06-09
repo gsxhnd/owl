@@ -5,6 +5,7 @@
 [![Go Report Card][8]][9]
 ![Release][10]
 ![GitHub release (latest by date)][11]
+![Alt](https://repobeats.axiom.co/api/embed/0b16fdad5a9f3567a9226ac5efb33351b4d84fa7.svg "Repobeats analytics image")
 
 [1]: https://godoc.org/github.com/gsxhnd/owl?status.svg
 [2]: https://pkg.go.dev/github.com/gsxhnd/owl
