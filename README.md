@@ -1,7 +1,7 @@
 [![GoDoc][1]][2]
 [![license][3]][4]
 ![Test][5]
-[![Coverage Status][6]][7]
+[![codecov](https://codecov.io/gh/gsxhnd/owl/branch/master/graph/badge.svg?token=ztSa0Pbck5)](https://codecov.io/gh/gsxhnd/owl)
 [![Go Report Card][8]][9]
 ![Release][10]
 ![GitHub release (latest by date)][11]
